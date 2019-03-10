@@ -3,18 +3,18 @@ package ch.epfl.dias.store.row;
 import ch.epfl.dias.store.DataType;
 
 public class DBTuple {
-	public Object[] fields;
-	public DataType[] types;
-	public boolean eof;
+	private Object[] m_fields;
+	private DataType[] m_types;
+	private boolean m_eof;
 
 	public DBTuple(Object[] fields, DataType[] types) {
-		this.fields = fields;
-		this.types = types;
-		this.eof = false;
+		this.m_fields = fields;
+		this.m_types = types;
+		this.m_eof = false;
 	}
 
 	public DBTuple() {
-		this.eof = true;
+		this.m_eof = true;
 	}
 
 	/**
@@ -26,18 +26,18 @@ public class DBTuple {
 	 * @return cast of field
 	 */
 	public Integer getFieldAsInt(int fieldNo) {
-		return (Integer) fields[fieldNo];
+		return (Integer) m_fields[fieldNo];
 	}
 
 	public Double getFieldAsDouble(int fieldNo) {
-		return (Double) fields[fieldNo];
+		return (Double) m_fields[fieldNo];
 	}
 
 	public Boolean getFieldAsBoolean(int fieldNo) {
-		return (Boolean) fields[fieldNo];
+		return (Boolean) m_fields[fieldNo];
 	}
 
 	public String getFieldAsString(int fieldNo) {
-		return (String) fields[fieldNo];
+		return (String) m_fields[fieldNo];
 	}
 }

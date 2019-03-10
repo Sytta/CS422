@@ -38,4 +38,5 @@ public abstract class Store {
 	public DBColumn[] getColumns(int[] columnsToGet) {
 		return null;
 	};
+	
 }

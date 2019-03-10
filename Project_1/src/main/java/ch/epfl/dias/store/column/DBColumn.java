@@ -7,10 +7,38 @@ import ch.epfl.dias.store.DataType;
 
 public class DBColumn {
 
-	// TODO: Implement
+	private ArrayList<Object> m_fields = new ArrayList<Object>();
+	private DataType m_type;
+	
+	public DBColumn(Object[] fields, DataType type)
+	{
+		this.m_fields.add(fields);
+		this.m_type = type;
+	}
+	
+	public DBColumn(DataType type)
+	{
+		this.m_type = type;
+	}
+	
+	public void addValue(Object value)
+	{
+		this.m_fields.add(value);
+	}
 	
 	public Integer[] getAsInteger() {
-		// TODO: Implement
-		return null;
+		return (Integer[]) m_fields.toArray();
+	}
+	
+	public Double[] getAsDouble() {
+		return (Double[]) m_fields.toArray();
+	}
+	
+	public Boolean[] getAsBoolean() {
+		return (Boolean[]) m_fields.toArray();
+	}
+	
+	public String[] getAsString() {
+		return (String[]) m_fields.toArray();
 	}
 }
