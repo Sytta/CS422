@@ -14,10 +14,10 @@ import ch.epfl.dias.store.row.DBTuple;
 
 public class ColumnStore extends Store {
 
-	DataType[] m_schema;
-	String m_filename;
-	String m_delimiter;
-	ArrayList<DBColumn> m_columns;
+	private DataType[] m_schema;
+	private String m_filename;
+	private String m_delimiter;
+	private ArrayList<DBColumn> m_columns;
 
 	public ColumnStore(DataType[] schema, String filename, String delimiter) {
 		this(schema, filename, delimiter, false);
@@ -47,7 +47,8 @@ public class ColumnStore extends Store {
         	String line = reader.readLine();
         	while(line != null)
         	{
-        		parseRow(line);
+        		// Read parse the value and store in corresponding columns
+        		parseRowAndStore(line);
         		line = reader.readLine();
         	}
         	
@@ -59,11 +60,25 @@ public class ColumnStore extends Store {
 
 	@Override
 	public DBColumn[] getColumns(int[] columnsToGet) {
-		// TODO: Implement
-		return null;
+		
+		if(columnsToGet.length == 0)
+		{
+			// Return all columns
+			return (DBColumn[]) m_columns.toArray();
+		}
+		
+		// Deep copy
+		DBColumn[] selectedColumns = new DBColumn[columnsToGet.length];
+		for(int i = 0; i < columnsToGet.length; i ++)
+		{
+			selectedColumns[i] = m_columns.get(columnsToGet[i]);
+		}
+		
+		return selectedColumns;
 	}
 	
-	private void parseRow(String line) {
+	
+	private void parseRowAndStore(String line) {
 		Object parsedValue;
 		String[] inputs = line.split(m_delimiter);
 		
@@ -85,8 +100,6 @@ public class ColumnStore extends Store {
 			case STRING:
 				parsedValue = inputs[i];
 				m_columns.get(i).addValue(parsedValue);
-				break;
-			default:
 				break;
 			}
 		}

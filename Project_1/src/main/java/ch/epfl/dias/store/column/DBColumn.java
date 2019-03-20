@@ -26,6 +26,7 @@ public class DBColumn {
 		this.m_fields.add(value);
 	}
 	
+	// Get whole column
 	public Integer[] getAsInteger() {
 		return (Integer[]) m_fields.toArray();
 	}
@@ -40,5 +41,10 @@ public class DBColumn {
 	
 	public String[] getAsString() {
 		return (String[]) m_fields.toArray();
+	}
+	
+	// Get individual value
+	public Object getValue(int i) {
+		return m_fields.get(i);
 	}
 }

@@ -13,10 +13,10 @@ import ch.epfl.dias.store.Store;
 
 public class RowStore extends Store {
 
-	DataType[] m_schema;
-	String m_filename;
-	String m_delimiter;
-	ArrayList<DBTuple> m_tuples;
+	private DataType[] m_schema;
+	private String m_filename;
+	private String m_delimiter;
+	private ArrayList<DBTuple> m_tuples;
 
 
 	public RowStore(DataType[] schema, String filename, String delimiter) {
@@ -49,9 +49,10 @@ public class RowStore extends Store {
 
 	@Override
 	public DBTuple getRow(int rownumber) {
-		if (rownumber < this.m_tuples.size()) {
+		try {
 			return m_tuples.get(rownumber);
-		} else {
+		} catch(IndexOutOfBoundsException e) {
+			System.err.printf("RowStore::getRow: Index Out of bound; rownumber = %d", rownumber);
 			return new DBTuple();
 		}
 	}
@@ -74,8 +75,6 @@ public class RowStore extends Store {
 				break;
 			case STRING:
 				parsedValues[i] = inputs[i];
-				break;
-			default:
 				break;
 			}
 		}
