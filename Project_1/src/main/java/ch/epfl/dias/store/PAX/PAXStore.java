@@ -59,6 +59,11 @@ public class PAXStore extends Store {
         		}
         	}
         	
+        	// Add last empty page ???
+//        	if (tupleNo != 0) {
+//        		this.m_pages.add(new DBPAXpage(this.m_schema, pageNo + 1));
+//            }
+        	
         } catch (IOException e)
         {
         	e.printStackTrace();
@@ -86,16 +91,16 @@ public class PAXStore extends Store {
 		{
 			switch (m_schema[i]) {
 			case INT:
-				currentPage.addValue(Integer.parseInt(inputs[i]));
+				currentPage.addValue(Integer.parseInt(inputs[i]), i);
 				break;
 			case BOOLEAN:
-				currentPage.addValue(Boolean.parseBoolean(inputs[i]));
+				currentPage.addValue(Boolean.parseBoolean(inputs[i]), i);
 				break;
 			case DOUBLE:
-				currentPage.addValue(Double.parseDouble(inputs[i]));
+				currentPage.addValue(Double.parseDouble(inputs[i]), i);
 				break;
 			case STRING:
-				currentPage.addValue(inputs[i]);
+				currentPage.addValue(inputs[i], i);
 				break;
 			}
 		}

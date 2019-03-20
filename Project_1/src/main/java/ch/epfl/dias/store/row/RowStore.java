@@ -41,6 +41,9 @@ public class RowStore extends Store {
         		line = reader.readLine();
         	}
         	
+        	// Add last tuple for eof
+        	this.m_tuples.add(new DBTuple());
+        	
         } catch (IOException e)
         {
         	e.printStackTrace();

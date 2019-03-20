@@ -10,11 +10,21 @@ public class DBTuple {
 	public DBTuple(Object[] fields, DataType[] types) {
 		this.m_fields = fields;
 		this.m_types = types;
+		
 		this.m_eof = false;
 	}
 
 	public DBTuple() {
+		// Last tuple in the table
 		this.m_eof = true;
+	}
+	
+	public boolean isEOF() {
+		return this.m_eof;
+	}
+	
+	public DataType getFieldType(int fieldNo) {
+		return this.m_types[fieldNo];
 	}
 
 	/**
@@ -39,5 +49,9 @@ public class DBTuple {
 
 	public String getFieldAsString(int fieldNo) {
 		return (String) m_fields[fieldNo];
+	}
+	
+	public Object getFieldAsObject(int fieldNo) {
+		return m_fields[fieldNo];
 	}
 }

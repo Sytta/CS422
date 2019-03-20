@@ -1,5 +1,7 @@
 package ch.epfl.dias;
 
+import java.io.IOException;
+
 import ch.epfl.dias.ops.Aggregate;
 import ch.epfl.dias.ops.BinaryOp;
 import ch.epfl.dias.store.DataType;
@@ -22,27 +24,39 @@ public class Main {
 		schema = new DataType[] { DataType.INT, DataType.INT, DataType.INT, DataType.INT, DataType.INT, DataType.INT,
 				DataType.INT, DataType.INT, DataType.INT, DataType.INT };
 
-		// RowStore rowstore = new RowStore(orderSchema, "input/orders_small.csv", "\\|");
-		// rowstore.load();
+		RowStore rowstore = new RowStore(orderSchema, "input/orders_small.csv", "\\|");
+		try {
+			rowstore.load();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-		// PAXStore paxstore = new PAXStore(orderSchema, "input/orders_small.csv", "\\|", 3);
-		// paxstore.load();
+		PAXStore paxstore = new PAXStore(orderSchema, "input/orders_small.csv", "\\|", 3);
+		try {
+			paxstore.load();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		 
-		// ch.epfl.dias.ops.volcano.Scan scan = new ch.epfl.dias.ops.volcano.Scan(rowstore);
-		// DBTuple currentTuple = scan.next();
-		// while (!currentTuple.eof) {
-		// 	System.out.println(currentTuple.getFieldAsInt(1));
-		// 	currentTuple = scan.next();
-		// }
+		ch.epfl.dias.ops.volcano.Scan scan = new ch.epfl.dias.ops.volcano.Scan(rowstore);
+		DBTuple currentTuple = scan.next();
+//		while (!currentTuple.eof) {
+		while (!currentTuple.isEOF()) {
+			System.out.println(currentTuple.getFieldAsInt(1));
+			currentTuple = scan.next();
+		}
 
-		// ColumnStore columnstoreData = new ColumnStore(schema, "input/data.csv", ",");
-		// columnstoreData.load();
-		//
-		// ch.epfl.dias.ops.block.Scan scan = new ch.epfl.dias.ops.block.Scan(columnstoreData);
-		// ch.epfl.dias.ops.block.Select sel = new ch.epfl.dias.ops.block.Select(scan, BinaryOp.EQ, 3, 6);
-		// ch.epfl.dias.ops.block.ProjectAggregate agg = new ch.epfl.dias.ops.block.ProjectAggregate(sel, Aggregate.COUNT, DataType.INT, 2);
-		// DBColumn[] result = agg.execute();
-		// int output = result[0].getAsInteger()[0];
-		// System.out.println(output);
+//		ColumnStore columnstoreData = new ColumnStore(schema, "input/data.csv", ",");
+//		columnstoreData.load();
+//		
+//		ch.epfl.dias.ops.block.Scan scan = new ch.epfl.dias.ops.block.Scan(columnstoreData);
+//		ch.epfl.dias.ops.block.Select sel = new ch.epfl.dias.ops.block.Select(scan, BinaryOp.EQ, 3, 6);
+//		ch.epfl.dias.ops.block.ProjectAggregate agg = new ch.epfl.dias.ops.block.ProjectAggregate(sel, Aggregate.COUNT, DataType.INT, 2);
+//		DBColumn[] result = agg.execute();
+//		int output = result[0].getAsInteger()[0];
+//		System.out.println(output);
+
 	}
 }

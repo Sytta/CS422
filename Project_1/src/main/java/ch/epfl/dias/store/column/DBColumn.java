@@ -9,6 +9,7 @@ public class DBColumn {
 
 	private ArrayList<Object> m_fields = new ArrayList<Object>();
 	private DataType m_type;
+	private boolean m_eof = true;
 	
 	public DBColumn(Object[] fields, DataType type)
 	{
@@ -19,6 +20,16 @@ public class DBColumn {
 	public DBColumn(DataType type)
 	{
 		this.m_type = type;
+	}
+	
+	public DBColumn() 
+	{
+		this.m_eof = false;
+	}
+	
+	public boolean isEOF() 
+	{
+		return this.m_eof;
 	}
 	
 	public void addValue(Object value)
