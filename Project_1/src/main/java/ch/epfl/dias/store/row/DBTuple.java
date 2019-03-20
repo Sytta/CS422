@@ -26,6 +26,10 @@ public class DBTuple {
 	public DataType getFieldType(int fieldNo) {
 		return this.m_types[fieldNo];
 	}
+	
+	public DataType[] getFieldTypes() {
+		return this.m_types;
+	}
 
 	/**
 	 * XXX Assuming that the caller has ALREADY checked the datatype, and has
@@ -36,22 +40,26 @@ public class DBTuple {
 	 * @return cast of field
 	 */
 	public Integer getFieldAsInt(int fieldNo) {
-		return (Integer) m_fields[fieldNo];
+		return (Integer) this.m_fields[fieldNo];
 	}
 
 	public Double getFieldAsDouble(int fieldNo) {
-		return (Double) m_fields[fieldNo];
+		return (Double) this.m_fields[fieldNo];
 	}
 
 	public Boolean getFieldAsBoolean(int fieldNo) {
-		return (Boolean) m_fields[fieldNo];
+		return (Boolean) this.m_fields[fieldNo];
 	}
 
 	public String getFieldAsString(int fieldNo) {
-		return (String) m_fields[fieldNo];
+		return (String) this.m_fields[fieldNo];
 	}
 	
 	public Object getFieldAsObject(int fieldNo) {
-		return m_fields[fieldNo];
+		return this.m_fields[fieldNo];
+	}
+	
+	public Object[] getAllFields() {
+		return this.m_fields;
 	}
 }
