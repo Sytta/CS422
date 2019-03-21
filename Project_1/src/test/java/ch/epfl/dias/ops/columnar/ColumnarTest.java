@@ -6,6 +6,7 @@ import ch.epfl.dias.store.DataType;
 import ch.epfl.dias.store.column.ColumnStore;
 import ch.epfl.dias.store.column.DBColumn;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -45,6 +46,18 @@ public class ColumnarTest {
 		columnstoreLineItem = new ColumnStore(lineitemSchema, "input/lineitem_small.csv", "\\|");
 		columnstoreLineItem.load();
 	}
+	
+    @Test
+    public void simpleTest(){
+        DBColumn[] columns = columnstoreLineItem.getColumns(new int[]{10});
+        DBColumn col = columns[0];
+        String[] x = col.getAsString();
+         for(String c: x){
+         	System.out.println(c);
+         }
+//         System.out.println(columns[0].type);
+        assertEquals(x[3],"1996-04-21");
+    }
 
 	@Test
 	public void spTestData() {
@@ -61,6 +74,43 @@ public class ColumnarTest {
 
 		assertTrue(output == 3);
 	}
+	
+    @Test
+    public void spTestData1(){
+        /* SELECT COUNT(*) FROM data WHERE col4 == 6 */	    
+        ch.epfl.dias.ops.columnar.Scan scan = new ch.epfl.dias.ops.columnar.Scan(columnstoreData);
+        ch.epfl.dias.ops.columnar.Select sel = new ch.epfl.dias.ops.columnar.Select(scan, BinaryOp.EQ, 3, 6);
+    
+        // This query should return only one result
+        DBColumn result = sel.execute()[0];
+       
+        Integer[] output = result.getAsInteger();
+        int[] realOutput = new int[] {1, 6, 8};
+        
+        for(int i = 0; i < realOutput.length; ++i) {
+        	assertTrue(output[i] == realOutput[i]);
+        }
+        
+        
+    }
+
+    @Test
+    public void spTestData2(){
+        /* SELECT COUNT(*) FROM data WHERE col4 == 6 */	    
+        ch.epfl.dias.ops.columnar.Scan scan = new ch.epfl.dias.ops.columnar.Scan(columnstoreData);
+        ch.epfl.dias.ops.columnar.Select sel = new ch.epfl.dias.ops.columnar.Select(scan, BinaryOp.EQ, 3, 6);
+        ch.epfl.dias.ops.columnar.Project proj = new ch.epfl.dias.ops.columnar.Project(sel, new int[]{0,2,4,5});
+    
+        proj.execute();
+        
+        // This query should return only one result
+        // This query should return only one result
+        DBColumn[] result = sel.execute();
+        
+        int output = result[0].getAsInteger()[0];
+        
+        assertTrue(output == 8);
+    }
 
 	@Test
 	public void spTestOrder() {

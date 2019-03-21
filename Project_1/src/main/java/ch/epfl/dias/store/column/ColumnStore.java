@@ -1,16 +1,12 @@
 package ch.epfl.dias.store.column;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import ch.epfl.dias.store.DataType;
 import ch.epfl.dias.store.Store;
-import ch.epfl.dias.store.row.DBTuple;
 
 public class ColumnStore extends Store {
 
@@ -18,6 +14,9 @@ public class ColumnStore extends Store {
 	private String m_filename;
 	private String m_delimiter;
 	private ArrayList<DBColumn> m_columns;
+	private boolean m_lateMaterialize;
+	
+	private int m_nbRows;
 
 	public ColumnStore(DataType[] schema, String filename, String delimiter) {
 		this(schema, filename, delimiter, false);
@@ -28,6 +27,8 @@ public class ColumnStore extends Store {
         this.m_filename = filename;
         this.m_delimiter = delimiter;
         this.m_columns = new ArrayList<DBColumn>();
+        this.m_nbRows = 0;
+        this.m_lateMaterialize = lateMaterialization;
 	}
 
 	@Override
@@ -47,34 +48,65 @@ public class ColumnStore extends Store {
         	String line = reader.readLine();
         	while(line != null)
         	{
+        		++this.m_nbRows;
         		// Read parse the value and store in corresponding columns
         		parseRowAndStore(line);
         		line = reader.readLine();
         	}
+        	
+        	System.out.printf("%d rows read from file %s", this.m_nbRows, this.m_filename);
         	
         } catch (IOException e)
         {
         	e.printStackTrace();
         }
 	}
-
+	
+	public DBColumn getColumn(int columnToGet) {
+		return this.m_columns.get(columnToGet);
+	}
+	
 	@Override
 	public DBColumn[] getColumns(int[] columnsToGet) {
 		
+		if (this.m_lateMaterialize) {
+			return getColumnIndex(columnsToGet);
+		} else {
+			return getColumnValue(columnsToGet);
+		}
+	}
+	
+	// Early materialization - return values
+	public DBColumn[] getColumnValue(int [] columnsToGet) {
 		if(columnsToGet.length == 0)
 		{
 			// Return all columns
-			return (DBColumn[]) m_columns.toArray();
+			return m_columns.toArray(new DBColumn[0]);
 		}
 		
 		// Deep copy
 		DBColumn[] selectedColumns = new DBColumn[columnsToGet.length];
-		for(int i = 0; i < columnsToGet.length; i ++)
+		for(int i = 0; i < columnsToGet.length; ++i)
 		{
 			selectedColumns[i] = m_columns.get(columnsToGet[i]);
 		}
 		
 		return selectedColumns;
+	}
+	
+	// Late materialization - only return ids
+	public DBColumn[] getColumnIndex(int[] columnsToGet) {
+		int rowNo = this.m_nbRows;
+		// if columnsToGet is empty, return indexes for all columns
+		int[] colNos = columnsToGet.length == 0 ? new int[this.m_schema.length] : columnsToGet;
+		
+		DBColumnId[] columnIndexes = new DBColumnId[colNos.length];
+		
+		for(int i = 0; i <  colNos.length; ++i) {
+			columnIndexes[i] = new DBColumnId(this, rowNo, colNos[i], this.m_schema[colNos[i]]);
+		}
+		
+		return columnIndexes;
 	}
 	
 	

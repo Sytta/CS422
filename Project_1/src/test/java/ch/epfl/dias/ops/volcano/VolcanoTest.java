@@ -105,7 +105,7 @@ public class VolcanoTest {
         int output = 0;
         while(result!=null && !result.isEOF()){
             output = result.getFieldAsInt(0);
-//            System.out.println(output);
+            System.out.println(output);
             result = sel.next();
         }
         assertTrue(output == 8);
@@ -125,7 +125,7 @@ public class VolcanoTest {
         int output = 0;
         while(!result.isEOF()){
             output = result.getFieldAsInt(0);
-            // System.out.println(output);
+             System.out.println(output);
             result = proj.next();
         }
         assertTrue(output == 8);
