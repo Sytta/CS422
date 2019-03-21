@@ -92,6 +92,45 @@ public class VolcanoTest {
 		assertTrue(output == 3);
 	}
 	
+    @Test
+    public void spTestData1(){
+        /* SELECT COUNT(*) FROM data WHERE col4 == 6 */	    
+        ch.epfl.dias.ops.volcano.Scan scan = new ch.epfl.dias.ops.volcano.Scan(rowstoreData);
+        ch.epfl.dias.ops.volcano.Select sel = new ch.epfl.dias.ops.volcano.Select(scan, BinaryOp.EQ, 3, 6);
+    
+        sel.open();
+        
+        // This query should return only one result
+        DBTuple result = sel.next();
+        int output = 0;
+        while(result!=null && !result.isEOF()){
+            output = result.getFieldAsInt(0);
+//            System.out.println(output);
+            result = sel.next();
+        }
+        assertTrue(output == 8);
+    }
+
+    @Test
+    public void spTestData2(){
+        /* SELECT COUNT(*) FROM data WHERE col4 == 6 */	    
+        ch.epfl.dias.ops.volcano.Scan scan = new ch.epfl.dias.ops.volcano.Scan(rowstoreData);
+        ch.epfl.dias.ops.volcano.Select sel = new ch.epfl.dias.ops.volcano.Select(scan, BinaryOp.EQ, 3, 6);
+        ch.epfl.dias.ops.volcano.Project proj = new ch.epfl.dias.ops.volcano.Project(sel, new int[]{0,2,4,5});
+    
+        proj.open();
+        
+        // This query should return only one result
+        DBTuple result = proj.next();
+        int output = 0;
+        while(!result.isEOF()){
+            output = result.getFieldAsInt(0);
+            // System.out.println(output);
+            result = proj.next();
+        }
+        assertTrue(output == 8);
+    }
+	
 	@Test
 	public void spTestOrder(){
 	    /* SELECT COUNT(*) FROM data WHERE col0 == 6 */	    

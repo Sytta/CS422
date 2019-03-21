@@ -21,6 +21,12 @@ public class Project implements VolcanoOperator {
 	@Override
 	public DBTuple next() {
 		DBTuple currentTuple = this.m_child.next();
+		
+		// Return directly if at end of file
+		if (currentTuple.isEOF()) {
+			return currentTuple;
+		}
+		
 		DataType[] returnDataTypes = new DataType[this.m_fieldNo.length];
 		Object[] returnFields = new Object[this.m_fieldNo.length];
 		
@@ -31,7 +37,7 @@ public class Project implements VolcanoOperator {
 		}
 		
 		// To avoid returning an empty tuple that is not EOF
-		return currentTuple.isEOF() ? currentTuple : new DBTuple(returnFields, returnDataTypes);
+		return new DBTuple(returnFields, returnDataTypes);
 		
 	}
 

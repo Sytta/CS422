@@ -79,7 +79,8 @@ public class PAXStore extends Store {
 		try {
 			return this.m_pages.get(pageNo).getTuple(tupleNo);
 		} catch(IndexOutOfBoundsException e) {
-			System.err.printf("PAXStore::getRow: Index Out of bound; rownumber = %d", rownumber);
+			// Got to end of page so return EOF
+//			System.err.printf("PAXStore::getRow: Index Out of bound; rownumber = %d\n", rownumber);
 			return new DBTuple();
 		}
 	}
