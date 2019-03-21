@@ -73,9 +73,7 @@ public class Select implements ColumnarOperator {
 		for(int i = 0; i < childColumns.length; ++i) {
 			filteredColumns[i] = childColumns[i].selectRows(selectedRowIndex);
 		}
-		
-		Integer[] col = filteredColumns[0].getAsInteger();
-		
+				
 		return filteredColumns;
 	}
 	

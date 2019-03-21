@@ -19,7 +19,7 @@ public class ColumnStore extends Store {
 	private int m_nbRows;
 
 	public ColumnStore(DataType[] schema, String filename, String delimiter) {
-		this(schema, filename, delimiter, false);
+		this(schema, filename, delimiter, true);
 	}
 
 	public ColumnStore(DataType[] schema, String filename, String delimiter, boolean lateMaterialization) {
@@ -96,14 +96,28 @@ public class ColumnStore extends Store {
 	
 	// Late materialization - only return ids
 	public DBColumn[] getColumnIndex(int[] columnsToGet) {
-		int rowNo = this.m_nbRows;
 		// if columnsToGet is empty, return indexes for all columns
-		int[] colNos = columnsToGet.length == 0 ? new int[this.m_schema.length] : columnsToGet;
+		int[] colNos;
 		
+		if (columnsToGet.length == 0) {
+			colNos = new int[this.m_schema.length];
+			// Construct column ids
+			for(int i = 0; i < colNos.length; i++) {
+				colNos[i] = i;
+			}
+		} else {
+			colNos = columnsToGet;
+		}
+		int[] rowNos = new int[this.m_nbRows];
 		DBColumnId[] columnIndexes = new DBColumnId[colNos.length];
 		
+		// Construct row ids
+		for(int i = 0; i < this.m_nbRows; i++) {
+			rowNos[i] = i;
+		}
+		
 		for(int i = 0; i <  colNos.length; ++i) {
-			columnIndexes[i] = new DBColumnId(this, rowNo, colNos[i], this.m_schema[colNos[i]]);
+			columnIndexes[i] = new DBColumnId(this, rowNos, colNos[i]);
 		}
 		
 		return columnIndexes;
