@@ -100,16 +100,16 @@ public class ColumnarTest {
         ch.epfl.dias.ops.columnar.Scan scan = new ch.epfl.dias.ops.columnar.Scan(columnstoreData);
         ch.epfl.dias.ops.columnar.Select sel = new ch.epfl.dias.ops.columnar.Select(scan, BinaryOp.EQ, 3, 6);
         ch.epfl.dias.ops.columnar.Project proj = new ch.epfl.dias.ops.columnar.Project(sel, new int[]{0,2,4,5});
-    
-        proj.execute();
-        
+            
         // This query should return only one result
-        // This query should return only one result
-        DBColumn[] result = sel.execute();
+        DBColumn result = proj.execute()[3];
         
-        int output = result[0].getAsInteger()[0];
+        Integer[] output = result.getAsInteger();
+        int[] realOutput = new int[] {6, 6, 6};
         
-        assertTrue(output == 8);
+        for(int i = 0; i < realOutput.length; ++i) {
+        	assertTrue(output[i] == realOutput[i]);
+        }
     }
 
 	@Test
