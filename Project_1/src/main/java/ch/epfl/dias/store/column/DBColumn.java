@@ -43,6 +43,10 @@ public class DBColumn {
 		return this.m_EOF;
 	}
 	
+	public int getLength() {
+		return this.m_fields.size();
+	}
+	
 	// Get whole column
 	public Integer[] getAsInteger() {
 		return m_fields.toArray(new Integer[this.m_fields.size()]);
