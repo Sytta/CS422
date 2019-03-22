@@ -9,7 +9,6 @@ public class DBColumn {
 	private ArrayList<Object> m_fields;
 	private DataType m_type;
 	protected boolean m_EOF = false;
-	protected boolean m_isLateMaterialization = false;
 	
 	public DBColumn() {
 		this.m_fields = null;
@@ -41,10 +40,6 @@ public class DBColumn {
 	
 	public boolean isEOF() {
 		return this.m_EOF;
-	}
-	
-	public boolean isLateMaterialization() {
-		return this.m_isLateMaterialization;
 	}
 	
 	public int getLength() {

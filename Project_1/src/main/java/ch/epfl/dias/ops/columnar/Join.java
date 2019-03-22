@@ -92,17 +92,8 @@ public class Join implements ColumnarOperator {
 		
 		filteredColumns[0] = childColumns[0].selectRows(selectedRowIndex);
 		
-		if(childColumns[0].isLateMaterialization()) {
-			// Copy ids
-			for(int i = 1; i < childColumns.length; ++i) {
-				filteredColumns[i] = new DBColumnId((DBColumnId)filteredColumns[0]);
-			}
-			
-		} else {
-			// Filter per column
-			for(int i = 1; i < childColumns.length; ++i) {
-				filteredColumns[i] = childColumns[i].selectRows(selectedRowIndex);
-			}
+		for(int i = 0; i < childColumns.length; ++i) {
+			filteredColumns[i] = childColumns[i].selectRows(selectedRowIndex);
 		}
 				
 		return filteredColumns;
