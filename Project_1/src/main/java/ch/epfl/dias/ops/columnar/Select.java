@@ -75,7 +75,7 @@ public class Select implements ColumnarOperator {
 		if(childColumns[0].isLateMaterialization()) {
 			// Copy ids
 			for(int i = 1; i < childColumns.length; ++i) {
-				filteredColumns[i] = new DBColumnId((DBColumnId)childColumns[0]);
+				filteredColumns[i] = new DBColumnId((DBColumnId)filteredColumns[0]);
 			}
 			
 		} else {
