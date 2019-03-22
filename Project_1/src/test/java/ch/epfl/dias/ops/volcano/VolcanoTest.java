@@ -67,14 +67,14 @@ public class VolcanoTest {
                 DataType.STRING,
                 DataType.STRING};
         
-        rowstoreData = new RowStore(schema, "input/data.csv", ",");
-        rowstoreData.load();
-        
         rowstoreOrder = new RowStore(orderSchema, "input/orders_small.csv", "\\|");
         rowstoreOrder.load();
         
         rowstoreLineItem = new RowStore(lineitemSchema, "input/lineitem_small.csv", "\\|");
-        rowstoreLineItem.load();        
+        rowstoreLineItem.load();     
+        
+        rowstoreData = new RowStore(schema, "input/data.csv", ",");
+        rowstoreData.load();
     }
     
 	@Test

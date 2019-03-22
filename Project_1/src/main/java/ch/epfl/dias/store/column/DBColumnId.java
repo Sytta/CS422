@@ -8,6 +8,7 @@ public class DBColumnId extends DBColumn {
 	private int[] m_rowIndex;
 	
 	private int m_colIndex;
+	protected boolean m_isLateMaterialization = true;
 	
 	public DBColumnId() {
 		this.m_EOF = true;
@@ -18,6 +19,12 @@ public class DBColumnId extends DBColumn {
 		this.m_columnStorePtr = columnStore;
 		this.m_rowIndex = rowIndex;
 		this.m_colIndex = currentCol;
+	}
+	
+	public DBColumnId(DBColumnId copy) {
+		this.m_columnStorePtr = copy.m_columnStorePtr;
+		this.m_rowIndex = copy.m_rowIndex;
+		this.m_colIndex = copy.m_colIndex;
 	}
 	
 	

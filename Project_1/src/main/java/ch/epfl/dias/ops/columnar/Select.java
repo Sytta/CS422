@@ -3,6 +3,7 @@ package ch.epfl.dias.ops.columnar;
 import java.util.ArrayList;
 import ch.epfl.dias.ops.BinaryOp;
 import ch.epfl.dias.store.column.DBColumn;
+import ch.epfl.dias.store.column.DBColumnId;
 
 public class Select implements ColumnarOperator {
 
@@ -69,9 +70,19 @@ public class Select implements ColumnarOperator {
 		
 		DBColumn[] filteredColumns = new DBColumn[childColumns.length];
 		
-		// Filter per column
-		for(int i = 0; i < childColumns.length; ++i) {
-			filteredColumns[i] = childColumns[i].selectRows(selectedRowIndex);
+		filteredColumns[0] = childColumns[0].selectRows(selectedRowIndex);
+		
+		if(childColumns[0].isLateMaterialization()) {
+			// Copy ids
+			for(int i = 1; i < childColumns.length; ++i) {
+				filteredColumns[i] = new DBColumnId((DBColumnId)childColumns[0]);
+			}
+			
+		} else {
+			// Filter per column
+			for(int i = 1; i < childColumns.length; ++i) {
+				filteredColumns[i] = childColumns[i].selectRows(selectedRowIndex);
+			}
 		}
 				
 		return filteredColumns;
