@@ -1,11 +1,6 @@
 package ch.epfl.dias.ops.columnar;
 
-import java.awt.List;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.OptionalDouble;
-
 import ch.epfl.dias.ops.Aggregate;
 import ch.epfl.dias.store.DataType;
 import ch.epfl.dias.store.column.DBColumn;

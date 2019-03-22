@@ -27,7 +27,7 @@ public class Select implements ColumnarOperator {
 		return selectRows(childColumns, selectedRowIndex);
 	}
 	
-	public ArrayList<Integer> getSelectedRowIndex(DBColumn column) {
+	private ArrayList<Integer> getSelectedRowIndex(DBColumn column) {
 		
 		ArrayList<Integer> selectedRowIndex = new ArrayList<Integer>();
 		int i = 0;
@@ -65,7 +65,7 @@ public class Select implements ColumnarOperator {
 		return selectedRowIndex;
 	}
 	
-	public DBColumn[] selectRows(DBColumn[] childColumns, ArrayList<Integer> selectedRowIndex) {
+	private DBColumn[] selectRows(DBColumn[] childColumns, ArrayList<Integer> selectedRowIndex) {
 		
 		DBColumn[] filteredColumns = new DBColumn[childColumns.length];
 		
