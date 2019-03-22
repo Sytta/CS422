@@ -92,6 +92,19 @@ public class DBColumnId extends DBColumn {
 	}
 	
 	@Override
+	public Object[] getAsObject() {
+		DBColumn column = this.m_columnStorePtr.getColumn(m_colIndex);
+		// Filter value
+		Object[] filteredColumn = new Object[this.m_rowIndex.length];
+		
+		for (int i = 0; i < this.m_rowIndex.length; ++i) {
+			filteredColumn[i] = column.getValue(m_rowIndex[i]);
+		}
+		
+		return filteredColumn;
+	}
+	
+	@Override
 	public DBColumn selectRows(ArrayList<Integer> selectedRowIndex) {
 		int[] selectedValues = new int[selectedRowIndex.size()];
 		int i = 0;
