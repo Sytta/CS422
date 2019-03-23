@@ -17,8 +17,8 @@ public class ProjectAggregate implements VolcanoOperator {
 	private double m_min;
 	private double m_sum;
 	
-	private Object m_result = null;
-	
+	private boolean m_eof;
+		
 
 	public ProjectAggregate(VolcanoOperator child, Aggregate agg, DataType dt, int fieldNo) {
 		this.m_child = child;
@@ -30,6 +30,8 @@ public class ProjectAggregate implements VolcanoOperator {
 		this.m_max = -Double.MAX_VALUE;
 		this.m_min = Double.MAX_VALUE;
 		this.m_sum = 0;
+		this.m_eof = false;
+
 	}
 
 	@Override
@@ -40,8 +42,19 @@ public class ProjectAggregate implements VolcanoOperator {
 
 	@Override
 	public DBTuple next() {
-		setAggregateResult();
-        return new DBTuple(new Object[] { this.m_result }, new DataType[] { this.m_dataType });
+		
+		if (this.m_eof) {
+			// EOF
+			return new DBTuple();
+		}
+		
+		Object result = getAggregateResult();
+		
+		// Once only operator
+		this.m_eof = true;
+		
+		
+        return new DBTuple(new Object[] { result }, new DataType[] { this.m_dataType });
 	}
 
 	@Override
@@ -96,23 +109,20 @@ public class ProjectAggregate implements VolcanoOperator {
 		}
 	}
 	
-	private void setAggregateResult() {
+	private Object getAggregateResult() {
 		switch (this.m_agg) {
 		case SUM:
-			this.m_result = this.m_dataType == DataType.DOUBLE ? (Double)this.m_sum : new Integer((int) this.m_sum);
+			return this.m_dataType == DataType.DOUBLE ? (Double)this.m_sum : new Integer((int) this.m_sum);
 		case AVG: 
-			this.m_result = this.m_sum / this.m_count; // always double
-			break;
+			return this.m_sum / this.m_count; // always double
 		case COUNT: 
-			this.m_result = this.m_count; // always int
-			break;
+			return this.m_count; // always int
 		case MAX:
-			this.m_result = this.m_dataType == DataType.DOUBLE ? (Double)this.m_max : new Integer((int) this.m_max);
-			break;
+			return this.m_dataType == DataType.DOUBLE ? (Double)this.m_max : new Integer((int) this.m_max);
 		case MIN:
-			this.m_result = this.m_dataType == DataType.DOUBLE ? (Double)this.m_min : new Integer((int) this.m_min);
-			break;
+			return this.m_dataType == DataType.DOUBLE ? (Double)this.m_min : new Integer((int) this.m_min);
 		}
+		return null;
 	}
 	
 	

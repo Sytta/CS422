@@ -12,6 +12,8 @@ public class ProjectAggregate implements ColumnarOperator {
     private DataType m_dataType;
     private int m_fieldNo;
     private Object m_result;
+    private boolean m_eof;
+    private DBColumn[] m_eofColumns;
 	
 	public ProjectAggregate(ColumnarOperator child, Aggregate agg, DataType dt, int fieldNo) {
 		this.m_child = child;
@@ -19,12 +21,28 @@ public class ProjectAggregate implements ColumnarOperator {
         this.m_dataType = dt;
         this.m_fieldNo = fieldNo;
         this.m_result = null;
+        this.m_eof = false;
 	}
 
 	@Override
 	public DBColumn[] execute() {
+		// EOF
+		if (this.m_eof) {
+			return this.m_eofColumns;
+		}
+		
 		DBColumn[] childColumns = this.m_child.execute();
+		
+		// Construct eof columns
+		this.m_eofColumns = new DBColumn[childColumns.length];
+		for (int i = 0; i < childColumns.length; ++i) {
+			this.m_eofColumns[i] = new DBColumn();
+		}
+		
 		performAggregate(childColumns[this.m_fieldNo]);
+		
+		// Once only operator
+		this.m_eof = true;
 		
 		return new DBColumn[] {new DBColumn(new Object[] {this.m_result}, this.m_dataType)};
 	}

@@ -102,6 +102,9 @@ public class VectorTest {
 		int output = result[0].getAsInteger()[0];
 
 		assertTrue(output == 3);
+		
+		DBColumn[] eofResult = agg.next();
+		assertTrue(eofResult[0].isEOF());
 	}
 	
 	@Test
