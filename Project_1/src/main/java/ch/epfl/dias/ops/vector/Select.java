@@ -26,6 +26,7 @@ public class Select implements VectorOperator {
 		this.m_fieldNo = fieldNo;
 		this.m_selectValue = value;
 		this.m_currentRowIndex = -1;
+		this.m_vectorsize = child.getVectorSize();
 	}
 	
 	@Override
@@ -33,7 +34,6 @@ public class Select implements VectorOperator {
 		this.m_child.open();
 		this.m_currentRowIndex = 0;
 		this.m_currentChildVector = this.m_child.next();
-		this.m_vectorsize = this.m_currentChildVector[0].getLength();
 		
 		this.m_resultVector = new DBColumn[this.m_currentChildVector.length];
 	}
@@ -83,6 +83,11 @@ public class Select implements VectorOperator {
 			this.m_resultVector[i] = new DBColumn(type);
 		}
 		
+	}
+	
+	@Override
+	public int getVectorSize() {
+		return this.m_vectorsize;
 	}
 	
 	private void performSelect(DBColumn column) {

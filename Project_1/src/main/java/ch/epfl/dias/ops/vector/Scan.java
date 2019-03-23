@@ -20,6 +20,7 @@ public class Scan implements VectorOperator {
 		this.m_columnLength = 0;
 	}
 	
+	@Override
 	public int getVectorSize() {
 		return this.m_vectorsize;
 	}

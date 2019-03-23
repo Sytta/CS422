@@ -74,6 +74,11 @@ public class ProjectAggregate implements VectorOperator {
 		this.m_child.close();
 	}
 	
+	@Override
+	public int getVectorSize() {
+		return this.m_child.getVectorSize();
+	}
+	
 	private void performAggregate(DBColumn column)
 	{
 		switch (this.m_agg) {

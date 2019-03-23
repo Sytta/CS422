@@ -21,4 +21,9 @@ public interface VectorOperator {
 	 */
 	void close();
 	
+	/**
+	 * Get vector size set only to scan
+	 */
+	int getVectorSize();
+	
 }

@@ -42,5 +42,10 @@ public class Project implements VectorOperator {
 	public void close() {
 		this.m_child.close();
 	}
+	
+	@Override
+	public int getVectorSize() {
+		return this.m_child.getVectorSize();
+	}
 
 }
