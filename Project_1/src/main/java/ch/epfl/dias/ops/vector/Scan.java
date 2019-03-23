@@ -35,7 +35,11 @@ public class Scan implements VectorOperator {
 	public DBColumn[] next() {
 		// EOF
 		if (this.m_rowStartIndex >= this.m_columnLength) {
-			return new DBColumn[] {new DBColumn()};
+			DBColumn[] eofColumns = new DBColumn[this.m_columns.length];
+			for (DBColumn col : eofColumns) {
+				col = new DBColumn();
+			}
+			return eofColumns;
 		}
 		
 		// Build the indexes
