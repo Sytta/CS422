@@ -19,7 +19,7 @@ public class ColumnStore extends Store {
 	private int m_nbRows;
 
 	public ColumnStore(DataType[] schema, String filename, String delimiter) {
-		this(schema, filename, delimiter, true);
+		this(schema, filename, delimiter, false);
 	}
 
 	public ColumnStore(DataType[] schema, String filename, String delimiter, boolean lateMaterialization) {
@@ -54,7 +54,7 @@ public class ColumnStore extends Store {
         		line = reader.readLine();
         	}
         	
-        	System.out.printf("%d rows read from file %s", this.m_nbRows, this.m_filename);
+//        	System.out.printf("%d rows read from file %s", this.m_nbRows, this.m_filename);
         	
         } catch (IOException e)
         {

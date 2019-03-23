@@ -20,4 +20,5 @@ public interface VectorOperator {
 	 * Close operation for vector-at-a-time operator
 	 */
 	void close();
+	
 }

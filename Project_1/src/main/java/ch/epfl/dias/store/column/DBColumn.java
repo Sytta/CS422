@@ -16,7 +16,7 @@ public class DBColumn {
 		this.m_EOF = true;
 	}
 	
-	public<T> DBColumn(Object[] fields, DataType type)
+	public DBColumn(Object[] fields, DataType type)
 	{
 		this.m_fields = new ArrayList<Object>();
 		
@@ -44,6 +44,10 @@ public class DBColumn {
 	
 	public int getLength() {
 		return this.m_fields.size();
+	}
+	
+	public DataType getType() {
+		return this.m_type;
 	}
 	
 	// Get whole column
