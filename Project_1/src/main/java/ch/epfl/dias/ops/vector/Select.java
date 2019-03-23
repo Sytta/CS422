@@ -14,8 +14,7 @@ public class Select implements VectorOperator {
 	private int m_selectValue;
 	
 	private int m_vectorsize;
-//	private DataType[] m_dataType;
-//	private ArrayList<Object>[] m_fields[];
+
 	private DBColumn[] m_resultVector;
 	
 	private int m_currentRowIndex;
@@ -37,16 +36,13 @@ public class Select implements VectorOperator {
 		this.m_vectorsize = this.m_currentChildVector[0].getLength();
 		
 		this.m_resultVector = new DBColumn[this.m_currentChildVector.length];
-			
-		for(int i = 0; i < this.m_resultVector.length; ++i) {
-			DataType type = this.m_currentChildVector[i].getType();
-			this.m_resultVector[i] = new DBColumn(type);
-		}
 	}
 
 	@Override
 	public DBColumn[] next() {
-		// also check if ......
+		// Empty result vector
+		this.initResultVector();
+		
 		while(this.m_resultVector[0].getLength() < this.m_vectorsize) {
 			
 			if (this.m_currentRowIndex >= this.m_vectorsize) {
@@ -59,6 +55,7 @@ public class Select implements VectorOperator {
 				
 				this.m_currentRowIndex = 0;
 			}
+			
 			
 			DBColumn column = this.m_currentChildVector[this.m_fieldNo];
 			performSelect(column);
@@ -77,6 +74,15 @@ public class Select implements VectorOperator {
 	@Override
 	public void close() {
 		this.m_child.close();
+	}
+	
+	private void initResultVector() {
+		
+		for(int i = 0; i < this.m_resultVector.length; ++i) {
+			DataType type = this.m_currentChildVector[i].getType();
+			this.m_resultVector[i] = new DBColumn(type);
+		}
+		
 	}
 	
 	private void performSelect(DBColumn column) {
@@ -114,6 +120,7 @@ public class Select implements VectorOperator {
 			
 			// if #value found attains vectorsize, stop and returns
 			if (this.m_resultVector[0].getLength() == this.m_vectorsize) {
+				++this.m_currentRowIndex; // increase row index for next turn
 				return;
 			}
 		}
@@ -123,7 +130,7 @@ public class Select implements VectorOperator {
 
 	private void addFields(int index) {
 		for (int i = 0; i < this.m_currentChildVector.length; ++i) {
-			m_resultVector[i].addValue(this.m_currentChildVector[i].getValue(index));
+			this.m_resultVector[i].addValue(this.m_currentChildVector[i].getValue(index));
 		}
 	}
 }
