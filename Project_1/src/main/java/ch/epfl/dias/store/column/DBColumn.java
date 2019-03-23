@@ -48,6 +48,13 @@ public class DBColumn {
 		}
 	}
 	
+	public void addValues(DBColumn col) {
+		this.m_fields.addAll(col.m_fields);
+		if (this.m_EOF) {
+			this.m_EOF = false;
+		}
+	}
+	
 	public boolean isEOF() {
 		return this.m_EOF;
 	}
