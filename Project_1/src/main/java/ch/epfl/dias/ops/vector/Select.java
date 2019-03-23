@@ -45,7 +45,7 @@ public class Select implements VectorOperator {
 		
 		while(this.m_resultVector[0].getLength() < this.m_vectorsize) {
 			
-			if (this.m_currentRowIndex >= this.m_vectorsize) {
+			if (this.m_currentRowIndex >= this.m_currentChildVector[0].getLength()) {
 				this.m_currentChildVector = this.m_child.next();
 				
 				if (this.m_currentChildVector[0].isEOF()) {

@@ -5,9 +5,14 @@ import java.util.Arrays;
 
 import ch.epfl.dias.ops.Aggregate;
 import ch.epfl.dias.ops.BinaryOp;
+import ch.epfl.dias.ops.volcano.HashJoin;
+import ch.epfl.dias.ops.volcano.ProjectAggregate;
+import ch.epfl.dias.ops.volcano.Select;
 import ch.epfl.dias.store.DataType;
 import ch.epfl.dias.store.column.ColumnStore;
 import ch.epfl.dias.store.column.DBColumn;
+import ch.epfl.dias.store.row.DBTuple;
+
 import static org.junit.Assert.*;
 
 import org.junit.Before;
@@ -186,6 +191,49 @@ public class VectorTest {
 		int output = result[0].getAsInteger()[0];
 
 		assertTrue(output == 3);
+	}
+	
+	@Test
+	public void joinTest1(){
+	    /* SELECT COUNT(*) FROM order JOIN lineitem ON (o_orderkey = orderkey) WHERE orderkey = 3;*/
+	
+		ch.epfl.dias.ops.vector.Scan scanOrder = new ch.epfl.dias.ops.vector.Scan(columnstoreOrder, standardVectorsize);
+		ch.epfl.dias.ops.vector.Scan scanLineitem = new ch.epfl.dias.ops.vector.Scan(columnstoreLineItem, standardVectorsize);
+	
+	    /*Filtering on both sides */
+		ch.epfl.dias.ops.vector.Select selOrder = new ch.epfl.dias.ops.vector.Select(scanOrder, BinaryOp.EQ,0,3);
+		ch.epfl.dias.ops.vector.Select selLineitem = new ch.epfl.dias.ops.vector.Select(scanLineitem, BinaryOp.EQ,0,3);
+	
+		ch.epfl.dias.ops.vector.Join join = new ch.epfl.dias.ops.vector.Join(selOrder,selLineitem,0,0);
+		ch.epfl.dias.ops.vector.ProjectAggregate agg = new ch.epfl.dias.ops.vector.ProjectAggregate(join,Aggregate.COUNT, DataType.INT,0);
+	
+		agg.open();
+	    //This query should return only one result
+	    DBColumn[] result = agg.next();
+	    
+	    int output = result[0].getAsInteger()[0];
+	    assertTrue(output == 3);
+	}
+	
+	@Test
+	public void joinTest2(){
+	    /* SELECT COUNT(*) FROM lineitem JOIN order ON (o_orderkey = orderkey) WHERE orderkey = 3;*/
+	
+		ch.epfl.dias.ops.vector.Scan scanOrder = new ch.epfl.dias.ops.vector.Scan(columnstoreOrder, standardVectorsize);
+		ch.epfl.dias.ops.vector.Scan scanLineitem = new ch.epfl.dias.ops.vector.Scan(columnstoreLineItem, standardVectorsize);
+	
+	    /*Filtering on both sides */
+		ch.epfl.dias.ops.vector.Select selOrder = new ch.epfl.dias.ops.vector.Select(scanOrder, BinaryOp.EQ,0,3);
+		ch.epfl.dias.ops.vector.Select selLineitem = new ch.epfl.dias.ops.vector.Select(scanLineitem, BinaryOp.EQ,0,3);
+	
+		ch.epfl.dias.ops.vector.Join join = new ch.epfl.dias.ops.vector.Join(selLineitem,selOrder,0,0);
+		ch.epfl.dias.ops.vector.ProjectAggregate agg = new ch.epfl.dias.ops.vector.ProjectAggregate(join,Aggregate.COUNT, DataType.INT,0);
+	
+	    agg.open();
+	    //This query should return only one result
+	    DBColumn result = agg.next()[0];
+	    int output = result.getAsInteger()[0];
+	    assertTrue(output == 3);
 	}
 
 }

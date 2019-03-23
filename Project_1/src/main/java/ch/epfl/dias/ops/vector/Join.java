@@ -100,7 +100,7 @@ public class Join implements VectorOperator {
 		
 		while(result[0].getLength() < this.m_vectorsize) {
 			
-			if (this.m_currentRightRowIndex >= this.m_vectorsize) {
+			if (this.m_currentRightRowIndex >= this.m_currentRightVector[0].getLength()) {
 				this.m_currentRightVector = this.m_rightChild.next();
 				
 				if (this.m_currentRightVector[0].isEOF()) {
