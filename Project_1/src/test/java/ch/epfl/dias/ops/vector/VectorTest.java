@@ -33,8 +33,8 @@ public class VectorTest {
 	int standardVectorsize = 3;
 
 	// 1 seconds max per method tested
-	@Rule
-	public Timeout globalTimeout = Timeout.seconds(1);
+//	@Rule
+//	public Timeout globalTimeout = Timeout.seconds(1);
 
 	@Before
 	public void init() throws IOException {
@@ -58,8 +58,33 @@ public class VectorTest {
 		columnstoreLineItem = new ColumnStore(lineitemSchema, "input/lineitem_small.csv", "\\|");
 		columnstoreLineItem.load();
 
-		columnstoreEmpty = new ColumnStore(schema, "input/empty.csv", ",");
-		columnstoreEmpty.load();
+//		columnstoreEmpty = new ColumnStore(schema, "input/empty.csv", ",");
+//		columnstoreEmpty.load();
+	}
+	
+	@Test
+	public void sTestData() {
+		// Read all the rows
+		ch.epfl.dias.ops.vector.Scan scan = new ch.epfl.dias.ops.vector.Scan(columnstoreOrder, standardVectorsize);
+		
+		scan.open();
+		DBColumn[] result = scan.next();
+		String resultPrint = "";
+		
+		while (!result[0].isEOF()) {
+			
+			for (int j = 0; j < result[0].getLength(); ++j) {
+				for (int i = 0; i < result.length; ++i) {
+					DBColumn col = result[i];
+					resultPrint += col.getValue(j).toString() + " // ";
+				}
+				
+				System.out.println(resultPrint);
+				resultPrint = "";
+			}
+			
+			result = scan.next();
+		}
 	}
 
 	@Test
@@ -78,6 +103,53 @@ public class VectorTest {
 
 		assertTrue(output == 3);
 	}
+	
+	@Test
+    public void spTestData1(){
+        /* SELECT COUNT(*) FROM data WHERE col4 == 6 */	    
+		ch.epfl.dias.ops.vector.Scan scan = new ch.epfl.dias.ops.vector.Scan(columnstoreData, standardVectorsize);
+		ch.epfl.dias.ops.vector.Select sel = new ch.epfl.dias.ops.vector.Select(scan, BinaryOp.EQ, 3, 6);
+    
+        // This query should return only one result
+		sel.open();
+        DBColumn[] returnedColumns = sel.next();
+        
+        Integer[] result = returnedColumns[0].getAsInteger();
+       
+        int[] realOutput = new int[] {1, 6, 8};
+        
+        for(int i = 0; i < realOutput.length; ++i) {
+        	assertTrue(result[i] == realOutput[i]);
+        }  
+        
+    }
+
+    @Test
+    public void spTestData2(){
+        /* SELECT COUNT(*) FROM data WHERE col4 == 6 */	    
+		ch.epfl.dias.ops.vector.Scan scan = new ch.epfl.dias.ops.vector.Scan(columnstoreData, standardVectorsize);
+		ch.epfl.dias.ops.vector.Select sel = new ch.epfl.dias.ops.vector.Select(scan, BinaryOp.EQ, 3, 6);
+        ch.epfl.dias.ops.vector.Project proj = new ch.epfl.dias.ops.vector.Project(sel, new int[]{0,2,4,5});
+            
+        // This query should return only one result
+        proj.open();
+        DBColumn[] returnedColumns = proj.next();
+        
+        Integer[] result = returnedColumns[3].getAsInteger(); // 5th col
+        
+        int[] realOutput = new int[] {6, 6, 6};
+        
+        for(int i = 0; i < realOutput.length; ++i) {
+        	assertTrue(result[i] == realOutput[i]);
+        }
+        
+        DBColumn[] eofColumns = proj.next();
+        
+        for (DBColumn col : eofColumns) {
+        	DBColumn aa = col;
+        	assertTrue(col.isEOF());
+        }
+    }
 
 	@Test
 	public void spTestOrder() {
