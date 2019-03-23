@@ -31,11 +31,21 @@ public class DBColumn {
 	{
 		this.m_fields = new ArrayList<Object>();
 		this.m_type = type;
+		this.m_EOF = true;
+	}
+	
+	public DBColumn(DBColumn col) {
+		this.m_fields = col.m_fields;
+		this.m_type = col.m_type;
+		this.m_EOF = col.m_EOF;
 	}
 	
 	public<T> void addValue(T value)
 	{
 		this.m_fields.add(value);
+		if (this.m_EOF) {
+			this.m_EOF = false;
+		}
 	}
 	
 	public boolean isEOF() {

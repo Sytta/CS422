@@ -24,6 +24,7 @@ public class DBColumnId extends DBColumn {
 		this.m_columnStorePtr = copy.m_columnStorePtr;
 		this.m_rowIndex = copy.m_rowIndex;
 		this.m_colIndex = copy.m_colIndex;
+		this.m_EOF = copy.m_EOF;
 	}
 	
 	
