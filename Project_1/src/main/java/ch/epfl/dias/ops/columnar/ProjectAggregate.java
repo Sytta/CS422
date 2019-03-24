@@ -55,13 +55,13 @@ public class ProjectAggregate implements ColumnarOperator {
 			if (this.m_dataType.equals(DataType.DOUBLE)) {
 				Double[] columnValuesSum = column.getAsDouble();
 				double[] columnPrimitivesSum = Arrays.stream(columnValuesSum).mapToDouble(Double::doubleValue).toArray();
-				Double sum = Arrays.stream(columnPrimitivesSum).max().getAsDouble();
+				Double sum = Arrays.stream(columnPrimitivesSum).sum();
 				
 				this.m_result = sum;
 			} else {
 				Integer[] columnValuesSumInt = column.getAsInteger();
 				int[] columnPrimitivesSumInt = Arrays.stream(columnValuesSumInt).mapToInt(Integer::intValue).toArray();
-				Integer sumInt = Arrays.stream(columnPrimitivesSumInt).max().getAsInt();
+				Integer sumInt = Arrays.stream(columnPrimitivesSumInt).sum();
 				
 				this.m_result = sumInt;
 			}

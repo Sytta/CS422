@@ -93,7 +93,7 @@ public class ProjectAggregate implements VectorOperator {
 				columnPrimitivesSum = Arrays.stream(columnValuesSumInt).mapToDouble(Integer::doubleValue).toArray();
 			}
 			
-			Double sum = Arrays.stream(columnPrimitivesSum).max().getAsDouble();
+			Double sum = Arrays.stream(columnPrimitivesSum).sum();
 			this.m_sum += sum;
 			break;
 			
@@ -103,7 +103,7 @@ public class ProjectAggregate implements VectorOperator {
 			
 		case MAX:
 			double[] columnPrimitivesMax;
-			if (this.m_dataType.equals(DataType.DOUBLE)) {
+			if (column.getType().equals(DataType.DOUBLE)) {
 				Double[] columnValuesMax = column.getAsDouble();
 				columnPrimitivesMax = Arrays.stream(columnValuesMax).mapToDouble(Double::doubleValue).toArray();
 			} else {
@@ -118,7 +118,7 @@ public class ProjectAggregate implements VectorOperator {
 			
 		case MIN:
 			double[] columnPrimitivesMin;
-			if (this.m_dataType.equals(DataType.DOUBLE)) {
+			if (column.getType().equals(DataType.DOUBLE)) {
 				Double[] columnValuesMin = column.getAsDouble();
 				columnPrimitivesMin = Arrays.stream(columnValuesMin).mapToDouble(Double::doubleValue).toArray();
 			} else {
