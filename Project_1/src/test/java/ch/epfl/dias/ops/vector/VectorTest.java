@@ -38,8 +38,8 @@ public class VectorTest {
 	int standardVectorsize = 3;
 
 	// 1 seconds max per method tested
-//	@Rule
-//	public Timeout globalTimeout = Timeout.seconds(1);
+	@Rule
+	public Timeout globalTimeout = Timeout.seconds(1);
 
 	@Before
 	public void init() throws IOException {

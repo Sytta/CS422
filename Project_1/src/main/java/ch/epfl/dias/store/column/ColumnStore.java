@@ -19,7 +19,7 @@ public class ColumnStore extends Store {
 	private int m_nbRows;
 
 	public ColumnStore(DataType[] schema, String filename, String delimiter) {
-		this(schema, filename, delimiter, false);
+		this(schema, filename, delimiter, true);
 	}
 
 	public ColumnStore(DataType[] schema, String filename, String delimiter, boolean lateMaterialization) {
