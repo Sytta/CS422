@@ -5,22 +5,22 @@ import ch.epfl.dias.store.DataType;
 public class DBTuple {
 	private Object[] m_fields;
 	private DataType[] m_types;
-	private boolean m_eof;
+	public boolean eof;
 
 	public DBTuple(Object[] fields, DataType[] types) {
 		this.m_fields = fields;
 		this.m_types = types;
 		
-		this.m_eof = false;
+		this.eof = false;
 	}
 
 	public DBTuple() {
 		// Last tuple in the table
-		this.m_eof = true;
+		this.eof = true;
 	}
 	
 	public boolean isEOF() {
-		return this.m_eof;
+		return this.eof;
 	}
 	
 	public DataType getFieldType(int fieldNo) {

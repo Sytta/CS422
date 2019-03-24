@@ -8,12 +8,12 @@ public class DBColumn {
 	
 	private ArrayList<Object> m_fields;
 	private DataType m_type;
-	protected boolean m_EOF = false;
+	public boolean eof = false;
 	
 	public DBColumn() {
 		this.m_fields = null;
 		this.m_type = null;
-		this.m_EOF = true;
+		this.eof = true;
 	}
 	
 	public DBColumn(Object[] fields, DataType type)
@@ -31,32 +31,32 @@ public class DBColumn {
 	{
 		this.m_fields = new ArrayList<Object>();
 		this.m_type = type;
-		this.m_EOF = true;
+		this.eof = true;
 	}
 	
 	public DBColumn(DBColumn col) {
 		this.m_fields = col.m_fields;
 		this.m_type = col.m_type;
-		this.m_EOF = col.m_EOF;
+		this.eof = col.eof;
 	}
 	
 	public<T> void addValue(T value)
 	{
 		this.m_fields.add(value);
-		if (this.m_EOF) {
-			this.m_EOF = false;
+		if (this.eof) {
+			this.eof = false;
 		}
 	}
 	
 	public void addValues(DBColumn col) {
 		this.m_fields.addAll(col.m_fields);
-		if (this.m_EOF) {
-			this.m_EOF = false;
+		if (this.eof) {
+			this.eof = false;
 		}
 	}
 	
 	public boolean isEOF() {
-		return this.m_EOF;
+		return this.eof;
 	}
 	
 	public int getLength() {
