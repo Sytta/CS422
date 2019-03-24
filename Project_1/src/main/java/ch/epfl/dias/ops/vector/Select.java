@@ -1,7 +1,5 @@
 package ch.epfl.dias.ops.vector;
 
-import java.util.ArrayList;
-
 import ch.epfl.dias.ops.BinaryOp;
 import ch.epfl.dias.store.DataType;
 import ch.epfl.dias.store.column.DBColumn;
