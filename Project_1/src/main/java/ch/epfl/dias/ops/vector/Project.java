@@ -32,7 +32,7 @@ public class Project implements VectorOperator {
 		DBColumn[] resultVector = new DBColumn[this.m_fieldNo.length];
 		
 		for (int i = 0; i < this.m_fieldNo.length; ++i) {
-			resultVector[i] = new DBColumn(childVector[i]);
+			resultVector[i] = new DBColumn(childVector[this.m_fieldNo[i]]);
 		}
 		
 		return resultVector;

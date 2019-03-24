@@ -38,17 +38,23 @@ public class Select implements VectorOperator {
 
 	@Override
 	public DBColumn[] next() {
+		if (this.m_currentChildVector[0].isEOF())
+			return this.m_currentChildVector;
+
 		// Empty result vector
 		this.initResultVector();
 		
 		while(this.m_resultVector[0].getLength() < this.m_vectorsize) {
-			
 			if (this.m_currentRowIndex >= this.m_currentChildVector[0].getLength()) {
 				this.m_currentChildVector = this.m_child.next();
 				
 				if (this.m_currentChildVector[0].isEOF()) {
+					if (this.m_resultVector[0].getLength() == 0) {
 						// /vectorsize = 0, first db is already eof
 						return this.m_currentChildVector;
+					} else {
+						return this.m_resultVector;
+					}
 				}
 				
 				this.m_currentRowIndex = 0;

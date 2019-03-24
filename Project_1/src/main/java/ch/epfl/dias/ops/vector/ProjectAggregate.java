@@ -95,6 +95,7 @@ public class ProjectAggregate implements VectorOperator {
 			
 			Double sum = Arrays.stream(columnPrimitivesSum).sum();
 			this.m_sum += sum;
+			this.m_count += column.getLength();
 			break;
 			
 		case COUNT:
@@ -127,7 +128,7 @@ public class ProjectAggregate implements VectorOperator {
 			}
 			
 			Double min = Arrays.stream(columnPrimitivesMin).min().getAsDouble();
-			this.m_min = Math.max(this.m_min, min);
+			this.m_min = Math.min(this.m_min, min);
 
 			break;
 		}

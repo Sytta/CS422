@@ -126,7 +126,7 @@ public class Join implements VectorOperator {
 			mergeIndexes(result);
 			
 			// Last vector block %vectorsize < 3
-			if (this.m_currentRightVector[0].getLength() < this.m_vectorsize) {
+			if (this.m_currentRightVector[0].getLength() < this.m_rightChild.getVectorSize()) {
 				break;
 			}
 			
