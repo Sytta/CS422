@@ -48,7 +48,7 @@ public class HashJoin implements VolcanoOperator {
 		{
 			Object currentRightField = this.m_currentRightTuple.getFieldAsObject(this.m_rightFieldNo);
 
-			if (m_leftIterator.hasNext()) {
+			if (this.m_leftIterator != null && m_leftIterator.hasNext()) {
 				return this.joinTuples(m_leftIterator.next());
 			} else {
 				

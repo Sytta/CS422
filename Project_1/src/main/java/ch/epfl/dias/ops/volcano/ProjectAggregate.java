@@ -12,10 +12,10 @@ public class ProjectAggregate implements VolcanoOperator {
 	private DataType m_dataType;
 	private int m_fieldNo;
 	
-	private int m_count;
-	private double m_max;
-	private double m_min;
-	private double m_sum;
+	private Integer m_count;
+	private Double m_max;
+	private Double m_min;
+	private Double m_sum;
 	
 	private boolean m_eof;
 		
@@ -29,7 +29,7 @@ public class ProjectAggregate implements VolcanoOperator {
 		this.m_count = 0;
 		this.m_max = -Double.MAX_VALUE;
 		this.m_min = Double.MAX_VALUE;
-		this.m_sum = 0;
+		this.m_sum = new Double(0);
 		this.m_eof = false;
 
 	}
@@ -68,7 +68,7 @@ public class ProjectAggregate implements VolcanoOperator {
 		
 		while (!currentTuple.isEOF()) {
 			
-			switch(this.m_dataType) {
+			switch(currentTuple.getFieldType(this.m_fieldNo)) {
 			case BOOLEAN:
 				performAggregate(currentTuple.getFieldAsBoolean(this.m_fieldNo));
 				break;
@@ -91,20 +91,20 @@ public class ProjectAggregate implements VolcanoOperator {
 	{
 		switch (this.m_agg) {
 		case SUM:
-			this.m_sum += (double)currentTupleValue;
+			this.m_sum += Double.valueOf(currentTupleValue.toString());
 			break;
 		case AVG:
-			this.m_sum += (double)currentTupleValue;
+			this.m_sum += Double.valueOf(currentTupleValue.toString());
 			this.m_count += 1;
 			break;
 		case COUNT:
 			this.m_count += 1;
 			break;
 		case MAX:
-			this.m_max = Math.max(this.m_max, (double)currentTupleValue);
+			this.m_max = Math.max(this.m_max, Double.valueOf(currentTupleValue.toString()));
 			break;
 		case MIN:
-			this.m_min = Math.min(this.m_min, (double)currentTupleValue);
+			this.m_min = Math.min(this.m_min, Double.valueOf(currentTupleValue.toString()));
 			break;
 		}
 	}
@@ -112,15 +112,27 @@ public class ProjectAggregate implements VolcanoOperator {
 	private Object getAggregateResult() {
 		switch (this.m_agg) {
 		case SUM:
-			return this.m_dataType == DataType.DOUBLE ? (Double)this.m_sum : new Integer((int) this.m_sum);
+			if (this.m_dataType == DataType.DOUBLE) {
+				return this.m_sum;
+			} else {
+				return new Integer(this.m_sum.intValue());
+			}
 		case AVG: 
 			return this.m_sum / this.m_count; // always double
 		case COUNT: 
 			return this.m_count; // always int
 		case MAX:
-			return this.m_dataType == DataType.DOUBLE ? (Double)this.m_max : new Integer((int) this.m_max);
+			if (this.m_dataType == DataType.DOUBLE) {
+				return this.m_max;
+			} else {
+				return new Integer(this.m_max.intValue());
+			}
 		case MIN:
-			return this.m_dataType == DataType.DOUBLE ? (Double)this.m_min : new Integer((int) this.m_min);
+			if (this.m_dataType == DataType.DOUBLE) {
+				return this.m_min;
+			} else {
+				return new Integer(this.m_min.intValue());
+			}
 		}
 		return null;
 	}
