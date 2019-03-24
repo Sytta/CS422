@@ -7,7 +7,7 @@ import ch.epfl.dias.store.DataType;
 public class DBColumn {
 	
 	private ArrayList<Object> m_fields;
-	private DataType m_type;
+	protected DataType m_type;
 	public boolean eof = false;
 	
 	public DBColumn() {

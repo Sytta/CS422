@@ -52,19 +52,32 @@ public class ProjectAggregate implements ColumnarOperator {
 	{
 		switch (this.m_agg) {
 		case SUM:
-			Double[] columnValuesSum = column.getAsDouble();
-			double[] columnPrimitivesSum = Arrays.stream(columnValuesSum).mapToDouble(Double::doubleValue).toArray();
-			Double sum = Arrays.stream(columnPrimitivesSum).max().getAsDouble();
-			
-			if (this.m_dataType.equals(DataType.DOUBLE))
+			if (this.m_dataType.equals(DataType.DOUBLE)) {
+				Double[] columnValuesSum = column.getAsDouble();
+				double[] columnPrimitivesSum = Arrays.stream(columnValuesSum).mapToDouble(Double::doubleValue).toArray();
+				Double sum = Arrays.stream(columnPrimitivesSum).max().getAsDouble();
+				
 				this.m_result = sum;
-			else
-				this.m_result = sum.intValue();
+			} else {
+				Integer[] columnValuesSumInt = column.getAsInteger();
+				int[] columnPrimitivesSumInt = Arrays.stream(columnValuesSumInt).mapToInt(Integer::intValue).toArray();
+				Integer sumInt = Arrays.stream(columnPrimitivesSumInt).max().getAsInt();
+				
+				this.m_result = sumInt;
+			}
 			break;
 			
 		case AVG:
-			Double[] columnValuesAvg = column.getAsDouble();
-			double[] columnPrimitivesAvg = Arrays.stream(columnValuesAvg).mapToDouble(Double::doubleValue).toArray();
+			double[] columnPrimitivesAvg;
+			if (column.getType().equals(DataType.DOUBLE)) {
+				Double[] doubleValues = column.getAsDouble();
+				columnPrimitivesAvg = Arrays.stream(doubleValues).mapToDouble(Double::doubleValue).toArray();
+				
+			} else {
+				Integer[] intValues = column.getAsInteger();
+				columnPrimitivesAvg = Arrays.stream(intValues).mapToDouble(Integer::doubleValue).toArray();
+			}
+			
 			Double average = Arrays.stream(columnPrimitivesAvg).average().getAsDouble();
 			this.m_result = average;
 			break;
@@ -74,31 +87,36 @@ public class ProjectAggregate implements ColumnarOperator {
 			break;
 			
 		case MAX:
-			Double[] columnValuesMax = column.getAsDouble();
-			double[] columnPrimitivesMax = Arrays.stream(columnValuesMax).mapToDouble(Double::doubleValue).toArray();
-			Double max = Arrays.stream(columnPrimitivesMax).max().getAsDouble();
-			
-			if (this.m_dataType.equals(DataType.DOUBLE)) 
+			if (this.m_dataType.equals(DataType.DOUBLE)) {
+				Double[] columnValuesMax = column.getAsDouble();
+				double[] columnPrimitivesMax = Arrays.stream(columnValuesMax).mapToDouble(Double::doubleValue).toArray();
+				Double max = Arrays.stream(columnPrimitivesMax).max().getAsDouble();	
 				this.m_result = max;
-			else
-				this.m_result = max.intValue();
-
+			} else {
+				Integer[] columnValuesMaxInt = column.getAsInteger();
+				int[] columnPrimitivesMaxInt = Arrays.stream(columnValuesMaxInt).mapToInt(Integer::intValue).toArray();
+				Integer maxInt = Arrays.stream(columnPrimitivesMaxInt).max().getAsInt();
+				this.m_result = maxInt;
+			}
+				
 			break;
 			
 		case MIN:
-			Double[] columnValuesMin = column.getAsDouble();
-			double[] columnPrimitivesMin = Arrays.stream(columnValuesMin).mapToDouble(Double::doubleValue).toArray();
-			Double min = Arrays.stream(columnPrimitivesMin).min().getAsDouble();
-			
-			if (this.m_dataType.equals(DataType.DOUBLE)) 
+			if (this.m_dataType.equals(DataType.DOUBLE)) { 
+				Double[] columnValuesMin = column.getAsDouble();
+				double[] columnPrimitivesMin = Arrays.stream(columnValuesMin).mapToDouble(Double::doubleValue).toArray();
+				Double min = Arrays.stream(columnPrimitivesMin).min().getAsDouble();
 				this.m_result = min;
-			else 
-				this.m_result = min.intValue();
+			} else {
+				Integer[] columnValuesMinInt = column.getAsInteger();
+				int[] columnPrimitivesMinInt = Arrays.stream(columnValuesMinInt).mapToInt(Integer::intValue).toArray();
+				int minInt = Arrays.stream(columnPrimitivesMinInt).min().getAsInt();
+				this.m_result = minInt;
+			}
 			
 			break;
 		}
 		
 	}
-	
 	
 }

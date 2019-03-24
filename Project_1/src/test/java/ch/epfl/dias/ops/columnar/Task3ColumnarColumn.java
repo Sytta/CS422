@@ -309,7 +309,7 @@ public class Task3ColumnarColumn {
         DBColumn[] result = agg.execute();
         double output = result[0].getAsDouble()[0];
         System.out.println(output + "\n");
-        assertTrue(output == 0.39);
+        assertTrue(output == 0.39); //0.1
     }
     
     @Test
@@ -359,7 +359,7 @@ public class Task3ColumnarColumn {
         DBColumn[] result = agg.execute();
         int output = result[0].getAsInteger()[0];
         System.out.println(output + "\n");
-        assertTrue(output == 3699420);
+        assertTrue(output == 3699420); //1233140
     }
 
     @Test

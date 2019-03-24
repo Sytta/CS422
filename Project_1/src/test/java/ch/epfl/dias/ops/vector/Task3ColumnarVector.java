@@ -104,7 +104,7 @@ public class Task3ColumnarVector {
         // This query should return only one result
         DBColumn[] result = proj.next();
         int output = 0;
-        while(result!=null){
+        while(!result[0].isEOF()){
             output = result[0].getAsInteger()[result[0].getAsInteger().length-1];
             for(Object val: result[0].getAsInteger()){
                 System.out.println(val);
@@ -128,7 +128,7 @@ public class Task3ColumnarVector {
         // This query should return only one result
         DBColumn[] result = proj.next();
         int output = 0;
-        while(result!=null){
+        while(!result[0].isEOF()){
             output = result[0].getAsInteger()[result[0].getAsInteger().length-1];
             for(Object val: result[0].getAsInteger()){
                 System.out.println(val);
@@ -151,7 +151,7 @@ public class Task3ColumnarVector {
         // This query should return only one result
         DBColumn[] result = sel.next();
         int output = 0;
-        while(result!=null){
+        while(!result[0].isEOF()){
             for(Object val: result[0].getAsInteger()){
                 System.out.println(val);
             }
@@ -174,7 +174,7 @@ public class Task3ColumnarVector {
         // This query should return only one result
         DBColumn[] result = sel.next();
         int output = 0;
-        while(result!=null){
+        while(!result[0].isEOF()){
             output = result[0].getAsInteger()[result[0].getAsInteger().length-1];
             for(Object val: result[0].getAsInteger()){
                 System.out.println(val);
@@ -203,7 +203,7 @@ public class Task3ColumnarVector {
 
         DBColumn[] result = join.next();
         int output = 0;
-        while(result!=null){
+        while(!result[0].isEOF()){
             output = result[13].getAsInteger()[result[13].getAsInteger().length-1];
             for(Object val: result[13].getAsInteger()){
                 System.out.println(val);
@@ -231,7 +231,7 @@ public class Task3ColumnarVector {
 
         DBColumn[] result = join.next();
         int output = 0;
-        while(result!=null){
+        while(!result[0].isEOF()){
             output = result[13].getAsInteger()[result[13].getAsInteger().length-1];
             for(Object val: result[13].getAsInteger()){
                 System.out.println(val);
@@ -260,7 +260,7 @@ public class Task3ColumnarVector {
 
         DBColumn[] result = join.next();
         int output = 0;
-        while(result!=null){
+        while(!result[0].isEOF()){
             output = result[10].getAsInteger()[result[10].getAsInteger().length-1];
             for(Object val: result[10].getAsInteger()){
                 System.out.println(val);
@@ -289,7 +289,7 @@ public class Task3ColumnarVector {
 
         DBColumn[] result = projFinal.next();
         int output = 0;
-        while(result!=null){
+        while(!result[0].isEOF()){
             output = result[1].getAsInteger()[result[1].getAsInteger().length-1];
             for(Object val: result[1].getAsInteger()){
                 System.out.println(val);
@@ -320,7 +320,7 @@ public class Task3ColumnarVector {
 
         DBColumn[] result = projFinal.next();
         int output = 0;
-        while(result!=null){
+        while(!result[0].isEOF()){
             output = result[1].getAsInteger()[result[1].getAsInteger().length-1];
             for(Object val: result[1].getAsInteger()){
                 System.out.println(val);

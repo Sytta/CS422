@@ -15,10 +15,10 @@ public class ProjectAggregate implements VectorOperator {
 	DataType m_dataType;
 	int m_fieldNo;
 	
-	private int m_count;
-	private double m_max;
-	private double m_min;
-	private double m_sum;
+	private Integer m_count;
+	private Double m_max;
+	private Double m_min;
+	private Double m_sum;
 	
 	private boolean m_eof;
 	private DBColumn[] m_eofColumns;
@@ -32,7 +32,7 @@ public class ProjectAggregate implements VectorOperator {
 		this.m_count = 0;
 		this.m_max = -Double.MAX_VALUE;
 		this.m_min = Double.MAX_VALUE;
-		this.m_sum = 0;
+		this.m_sum = new Double(0);
 		this.m_eof = false;
 	}
 
@@ -84,8 +84,15 @@ public class ProjectAggregate implements VectorOperator {
 		switch (this.m_agg) {
 		case SUM:
 		case AVG:
-			Double[] columnValuesSum = column.getAsDouble();
-			double[] columnPrimitivesSum = Arrays.stream(columnValuesSum).mapToDouble(Double::doubleValue).toArray();
+			double[] columnPrimitivesSum;
+			if (column.getType().equals(DataType.DOUBLE)) {
+				Double[] columnValuesSum = column.getAsDouble();
+				columnPrimitivesSum = Arrays.stream(columnValuesSum).mapToDouble(Double::doubleValue).toArray();
+			} else {
+				Integer[] columnValuesSumInt = column.getAsInteger();
+				columnPrimitivesSum = Arrays.stream(columnValuesSumInt).mapToDouble(Integer::doubleValue).toArray();
+			}
+			
 			Double sum = Arrays.stream(columnPrimitivesSum).max().getAsDouble();
 			this.m_sum += sum;
 			break;
@@ -95,19 +102,31 @@ public class ProjectAggregate implements VectorOperator {
 			break;
 			
 		case MAX:
-			Double[] columnValuesMax = column.getAsDouble();
-			double[] columnPrimitivesMax = Arrays.stream(columnValuesMax).mapToDouble(Double::doubleValue).toArray();
-			Double max = Arrays.stream(columnPrimitivesMax).max().getAsDouble();
+			double[] columnPrimitivesMax;
+			if (this.m_dataType.equals(DataType.DOUBLE)) {
+				Double[] columnValuesMax = column.getAsDouble();
+				columnPrimitivesMax = Arrays.stream(columnValuesMax).mapToDouble(Double::doubleValue).toArray();
+			} else {
+				Integer[] columnValuesMaxInt = column.getAsInteger();
+				columnPrimitivesMax = Arrays.stream(columnValuesMaxInt).mapToDouble(Integer::doubleValue).toArray();
+			}
 			
+			Double max = Arrays.stream(columnPrimitivesMax).max().getAsDouble();
 			this.m_max = Math.max(this.m_max, max);
 			
 			break;
 			
 		case MIN:
-			Double[] columnValuesMin = column.getAsDouble();
-			double[] columnPrimitivesMin = Arrays.stream(columnValuesMin).mapToDouble(Double::doubleValue).toArray();
-			Double min = Arrays.stream(columnPrimitivesMin).min().getAsDouble();
+			double[] columnPrimitivesMin;
+			if (this.m_dataType.equals(DataType.DOUBLE)) {
+				Double[] columnValuesMin = column.getAsDouble();
+				columnPrimitivesMin = Arrays.stream(columnValuesMin).mapToDouble(Double::doubleValue).toArray();
+			} else {
+				Integer[] columnValuesMinInt = column.getAsInteger();
+				columnPrimitivesMin = Arrays.stream(columnValuesMinInt).mapToDouble(Integer::doubleValue).toArray();
+			}
 			
+			Double min = Arrays.stream(columnPrimitivesMin).min().getAsDouble();
 			this.m_min = Math.max(this.m_min, min);
 
 			break;
@@ -118,15 +137,27 @@ public class ProjectAggregate implements VectorOperator {
 	private Object getAggregateResult() {
 		switch (this.m_agg) {
 		case SUM:
-			return this.m_dataType == DataType.DOUBLE ? (Double)this.m_sum : new Integer((int) this.m_sum);
+			if (this.m_dataType == DataType.DOUBLE) {
+				return this.m_sum;
+			} else {
+				return new Integer(this.m_sum.intValue());
+			}
 		case AVG: 
 			return this.m_sum / this.m_count; // always double
 		case COUNT: 
 			return this.m_count; // always int
 		case MAX:
-			return this.m_dataType == DataType.DOUBLE ? (Double)this.m_max : new Integer((int) this.m_max);
+			if (this.m_dataType == DataType.DOUBLE) {
+				return this.m_max;
+			} else {
+				return new Integer(this.m_max.intValue());
+			}
 		case MIN:
-			return this.m_dataType == DataType.DOUBLE ? (Double)this.m_min : new Integer((int) this.m_min);
+			if (this.m_dataType == DataType.DOUBLE) {
+				return this.m_min;
+			} else {
+				return new Integer(this.m_min.intValue());
+			}
 		}
 		return null;
 	}

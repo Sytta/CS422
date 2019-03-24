@@ -2,6 +2,8 @@ package ch.epfl.dias.store.column;
 
 import java.util.ArrayList;
 
+import ch.epfl.dias.store.DataType;
+
 public class DBColumnId extends DBColumn {
 	
 	private ColumnStore m_columnStorePtr;
@@ -13,11 +15,12 @@ public class DBColumnId extends DBColumn {
 		this.eof = true;
 	}
 	
-	public DBColumnId(ColumnStore columnStore, int[] rowIndex, int currentCol)
+	public DBColumnId(ColumnStore columnStore, int[] rowIndex, int currentCol, DataType type)
 	{
 		this.m_columnStorePtr = columnStore;
 		this.m_rowIndex = rowIndex;
 		this.m_colIndex = currentCol;
+		this.m_type = type;
 	}
 	
 	public DBColumnId(DBColumnId copy) {
@@ -25,6 +28,7 @@ public class DBColumnId extends DBColumn {
 		this.m_rowIndex = copy.m_rowIndex;
 		this.m_colIndex = copy.m_colIndex;
 		this.eof = copy.eof;
+		this.m_type = copy.m_type;
 	}
 	
 	
@@ -119,7 +123,7 @@ public class DBColumnId extends DBColumn {
 			selectedValues[i++] = this.m_rowIndex[row];
 		}
 		
-		return new DBColumnId(this.m_columnStorePtr, selectedValues, this.m_colIndex);
+		return new DBColumnId(this.m_columnStorePtr, selectedValues, this.m_colIndex, this.m_type);
 	}
 
 }

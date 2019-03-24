@@ -19,7 +19,7 @@ public class ColumnStore extends Store {
 	private int m_nbRows;
 
 	public ColumnStore(DataType[] schema, String filename, String delimiter) {
-		this(schema, filename, delimiter, false);
+		this(schema, filename, delimiter, true);
 	}
 
 	public ColumnStore(DataType[] schema, String filename, String delimiter, boolean lateMaterialization) {
@@ -117,7 +117,7 @@ public class ColumnStore extends Store {
 		}
 		
 		for(int i = 0; i <  colNos.length; ++i) {
-			columnIndexes[i] = new DBColumnId(this, rowNos, colNos[i]);
+			columnIndexes[i] = new DBColumnId(this, rowNos, colNos[i], this.m_schema[i]);
 		}
 		
 		return columnIndexes;
