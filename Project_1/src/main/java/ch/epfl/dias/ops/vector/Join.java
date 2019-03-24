@@ -97,6 +97,10 @@ public class Join implements VectorOperator {
 			result[i] = new DBColumn(this.m_datatypes[i]);
 		}
 		
+		// Stitches
+		if (!this.m_stitchedLeftIndexes.isEmpty()) {
+			mergeIndexes(result);
+		}
 		
 		while(result[0].getLength() < this.m_vectorsize) {
 			
@@ -105,7 +109,11 @@ public class Join implements VectorOperator {
 				
 				if (this.m_currentRightVector[0].isEOF()) {
 					// first vector returned is eof -> return eof
-					return this.m_eofColumns;
+					if (result[0].getLength() == 0) {
+						return this.m_eofColumns;
+					} else {
+						return result;
+					}
 				}
 				
 				this.m_currentRightRowIndex = 0;
