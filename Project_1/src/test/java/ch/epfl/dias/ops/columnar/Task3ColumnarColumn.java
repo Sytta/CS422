@@ -53,7 +53,9 @@ public class Task3ColumnarColumn {
                 DataType.STRING,
                 DataType.STRING};
         
-        ColumnStoreOrder = new ColumnStore(orderSchema, "input/orders_small.csv", "\\|");
+    	long startTime = new Date().getTime();
+        
+        ColumnStoreOrder = new ColumnStore(orderSchema, "input/orders_big.csv", "\\|");
         try {
 			ColumnStoreOrder.load();
 		} catch (IOException e) {
@@ -61,18 +63,20 @@ public class Task3ColumnarColumn {
 			e.printStackTrace();
 		}
         
-        ColumnStoreLineItem = new ColumnStore(lineitemSchema, "input/lineitem_small.csv", "\\|");
+        ColumnStoreLineItem = new ColumnStore(lineitemSchema, "input/lineitem_big.csv", "\\|");
         try {
 			ColumnStoreLineItem.load();
 		} catch (IOException e) {
 			// TODO Auto-generated catch columnar
 			e.printStackTrace();
-		}        
+		}      
+        
+        System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName() + " Duration = " + (new Date().getTime() - startTime) + "ms\r\n");
     }
     
     
     @Test
-    public void query1(){
+    public void ColumnarColumnquery1(){
         /* SELECT L.L_PARTKEY, L.L_LINESTATUS, L_RECEIPTDATE 
          * FROM lineitem L 
          * WHERE L.L_QUANTITY >= 20 */
@@ -85,20 +89,20 @@ public class Task3ColumnarColumn {
             
         // This query should return only one result
         DBColumn[] result = proj.execute();
-        
-        System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName() + " Duration = " + (new Date().getTime() - startTime) + "ms\r\n");
-        
+                
 //        int output = result[0].getAsInteger()[result[0].getAsInteger().length-1];
         
         Integer[] output = result[0].getAsInteger();
         for (Object val : output) {
-            System.out.println(val);
+//            System.out.println(val);
         }
 //        assertTrue(output == 1284483);
+        System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName() + " Duration = " + (new Date().getTime() - startTime) + "ms\r\n");
+        
     }
     
     @Test
-    public void query2(){
+    public void ColumnarColumnquery2(){
         /* SELECT L.L_TAX, O.O_COMMENT
 		 * FROM orders O, lineitem L
 		 * WHERE O.O_ORDERKEY = L.L_ORDERKEY
@@ -118,21 +122,18 @@ public class Task3ColumnarColumn {
             
         // This query should return only one result
         DBColumn[] result = proj.execute();
+                
+        Double[] output = result[0].getAsDouble();
+        for (Object val : output) {
+//            System.out.println(val);
+        }
         
         System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName() + " Duration = " + (new Date().getTime() - startTime) + "ms\r\n");
         
-        Double[] output = result[0].getAsDouble();
-        for (Object val : output) {
-            System.out.println(val);
-        }
-        
-//        int output = result[0].getAsInteger()[result[0].getAsInteger().length-1];
-//        System.out.println(output);
-//        assertTrue(output == 17971);
     }
     
     @Test
-    public void query3(){
+    public void ColumnarColumnquery3(){
         /* SELECT MIN(L.L_DISCOUNT)
 		 * FROM lineitem L
 		 * WHERE L.L_QUANTITY < 30 */
@@ -146,11 +147,11 @@ public class Task3ColumnarColumn {
             
         // This query should return only one result
         DBColumn[] result = agg.execute();
-        
-        System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName() + " Duration = " + (new Date().getTime() - startTime) + "ms\r\n");
-        
+                
         double output = result[0].getAsDouble()[0];
-        System.out.println(output + "\n");
+//        System.out.println(output + "\n");
 //        assertTrue(output == 0.04);
+        System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName() + " Duration = " + (new Date().getTime() - startTime) + "ms\r\n");
+
     }
 }

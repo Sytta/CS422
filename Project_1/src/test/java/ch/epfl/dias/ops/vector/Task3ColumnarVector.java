@@ -21,7 +21,7 @@ public class Task3ColumnarVector {
     ColumnStore ColumnStoreOrder;
     ColumnStore ColumnStoreLineItem;
     
-	int standardVectorsize = 100000;
+	int standardVectorsize = 10000;
     
     @Before
     public void init()  {
@@ -55,7 +55,9 @@ public class Task3ColumnarVector {
                 DataType.STRING,
                 DataType.STRING};
         
-        ColumnStoreOrder = new ColumnStore(orderSchema, "input/orders_small.csv", "\\|");
+    	long startTime = new Date().getTime();
+        
+        ColumnStoreOrder = new ColumnStore(orderSchema, "input/orders_big.csv", "\\|");
         try {
 			ColumnStoreOrder.load();
 		} catch (IOException e) {
@@ -63,18 +65,20 @@ public class Task3ColumnarVector {
 			e.printStackTrace();
 		}
         
-        ColumnStoreLineItem = new ColumnStore(lineitemSchema, "input/lineitem_small.csv", "\\|");
+        ColumnStoreLineItem = new ColumnStore(lineitemSchema, "input/lineitem_big.csv", "\\|");
         try {
 			ColumnStoreLineItem.load();
 		} catch (IOException e) {
 			// TODO Auto-generated catch vector
 			e.printStackTrace();
 		}        
+        
+        System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName() + " Duration = " + (new Date().getTime() - startTime) + "ms\r\n");
     }
     
     
     @Test
-    public void query1(){
+    public void ColumnarVectorquery1(){
         /* SELECT L.L_PARTKEY, L.L_LINESTATUS, L_RECEIPTDATE 
          * FROM lineitem L 
          * WHERE L.L_QUANTITY >= 20 */
@@ -93,21 +97,18 @@ public class Task3ColumnarVector {
 //        String output;
         while(!result[0].isEOF()){
         	Integer[] output = result[0].getAsInteger();
-//            output = stringOutput[stringOutput.length-1];
             for(Object val: output){
-                System.out.println(val);
+//                System.out.println(val);
             }
             result = proj.next();
         }
         
         System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName() + " Duration = " + (new Date().getTime() - startTime) + "ms\r\n");
         
-        System.out.println();
-//        assertTrue(output == 0);
     }
     
     @Test
-    public void query2(){
+    public void ColumnarVectorquery2(){
         /* SELECT L.L_TAX, O.O_COMMENT
 		 * FROM orders O, lineitem L
 		 * WHERE O.O_ORDERKEY = L.L_ORDERKEY
@@ -134,19 +135,17 @@ public class Task3ColumnarVector {
             output = result[0].getAsDouble();
 //            int outputSingle = output[output.length-1];
             for(Object val: output){
-                System.out.println(val);
+//                System.out.println(val);
             }
             result = proj.next();
         }
         
         System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName() + " Duration = " + (new Date().getTime() - startTime) + "ms\r\n");
         
-        System.out.println();
-//        assertTrue(output == 0);
     }
     
     @Test
-    public void query3(){
+    public void ColumnarVectorquery3(){
         /* SELECT MIN(L.L_DISCOUNT)
 		 * FROM lineitem L
 		 * WHERE L.L_QUANTITY < 30 */
@@ -162,11 +161,10 @@ public class Task3ColumnarVector {
      // This query should return only one result
         DBColumn[] result = agg.next();
         double output = result[0].getAsDouble()[0];
-        System.out.println(output + "\n");
+//        System.out.println(output + "\n");
         
         System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName() + " Duration = " + (new Date().getTime() - startTime) + "ms\r\n");
 
-
-        assertTrue(output == 0.04);
+//        assertTrue(output == 0.04);
     }
 }

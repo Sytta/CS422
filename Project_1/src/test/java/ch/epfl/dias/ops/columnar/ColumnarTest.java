@@ -53,7 +53,7 @@ public class ColumnarTest {
         DBColumn col = columns[0];
         String[] x = col.getAsString();
          for(String c: x){
-         	System.out.println(c);
+//         	System.out.println(c);
          }
 //         System.out.println(columns[0].type);
         assertEquals(x[3],"1996-04-21");
