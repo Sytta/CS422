@@ -2,6 +2,8 @@
 # Created by https://www.gitignore.io/api/java,macos,scala,eclipse,intellij,intellij+iml,intellij+all
 # Edit at https://www.gitignore.io/?templates=java,macos,scala,eclipse,intellij,intellij+iml,intellij+all
 
+Project_1/target/
+
 ### Eclipse ###
 .metadata
 bin/
