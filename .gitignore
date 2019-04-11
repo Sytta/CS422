@@ -313,4 +313,18 @@ Temporary Items
 
 ### Scala ###
 
+### SBT ###
+# Simple Build Tool
+# http://www.scala-sbt.org/release/docs/Getting-Started/Directories.html#configuring-version-control
+
+dist/*
+target/
+lib_managed/
+src_managed/
+project/boot/
+project/plugins/project/
+.history
+.cache
+.lib/
+
 # End of https://www.gitignore.io/api/java,macos,scala,eclipse,intellij,intellij+iml,intellij+all
