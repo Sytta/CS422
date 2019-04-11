@@ -85,12 +85,12 @@ public class ColumnarVectorTest {
         while(!result[0].isEOF()){
             output = result[0].getAsInteger()[result[0].getAsInteger().length-1];
             for(Object val: result[0].getAsInteger()){
-                System.out.println(val);
+//                //                System.out.println(val);
             }
-            System.out.println();
+//            //                System.out.println();
             result = proj.next();
         }
-        System.out.println();
+//        //                System.out.println();
         assertTrue(output == 1284483);
     }
     
@@ -109,11 +109,11 @@ public class ColumnarVectorTest {
         while(!result[0].isEOF()){
             output = result[0].getAsInteger()[result[0].getAsInteger().length-1];
             for(Object val: result[0].getAsInteger()){
-                System.out.println(val);
+//                //                System.out.println(val);
             }
             result = proj.next();
         }
-        System.out.println();
+//        //                System.out.println();
         assertTrue(output == 17971);
     }
     
@@ -131,12 +131,12 @@ public class ColumnarVectorTest {
         int output = 0;
         while(!result[0].isEOF()){
             for(Object val: result[0].getAsInteger()){
-                System.out.println(val);
+                //                System.out.println(val);
             }
             output = result[0].getAsInteger()[result[0].getAsInteger().length-1];
             result = sel.next();
         }
-        System.out.println();
+        //                System.out.println();
         assertTrue(output == 34508);
     }
 
@@ -155,11 +155,11 @@ public class ColumnarVectorTest {
         while(!result[0].isEOF()){
             output = result[0].getAsInteger()[result[0].getAsInteger().length-1];
             for(Object val: result[0].getAsInteger()){
-                System.out.println(val);
+                //                System.out.println(val);
             }
             result = sel.next();
         }
-        System.out.println();
+        //                System.out.println();
         assertTrue(output == 65359);
     }
 
@@ -184,11 +184,11 @@ public class ColumnarVectorTest {
         while(!result[0].isEOF()){
             output = result[13].getAsInteger()[result[13].getAsInteger().length-1];
             for(Object val: result[13].getAsInteger()){
-                System.out.println(val);
+                //                System.out.println(val);
             }
             result = join.next();
         }
-        System.out.println();
+        //                System.out.println();
         assertTrue(output == 27);
     }
     
@@ -212,11 +212,11 @@ public class ColumnarVectorTest {
         while(!result[0].isEOF()){
             output = result[13].getAsInteger()[result[13].getAsInteger().length-1];
             for(Object val: result[13].getAsInteger()){
-                System.out.println(val);
+                //                System.out.println(val);
             }
             result = join.next();
         }
-        System.out.println();
+        //                System.out.println();
         assertTrue(output == 27);
     }
     
@@ -241,11 +241,11 @@ public class ColumnarVectorTest {
         while(!result[0].isEOF()){
             output = result[10].getAsInteger()[result[10].getAsInteger().length-1];
             for(Object val: result[10].getAsInteger()){
-                System.out.println(val);
+                //                System.out.println(val);
             }
             result = join.next();
         }
-        System.out.println();
+        //                System.out.println();
         assertTrue(output == 1284483);
     }
     
@@ -270,11 +270,11 @@ public class ColumnarVectorTest {
         while(!result[0].isEOF()){
             output = result[1].getAsInteger()[result[1].getAsInteger().length-1];
             for(Object val: result[1].getAsInteger()){
-                System.out.println(val);
+                //                System.out.println(val);
             }
             result = join.next();
         }
-        System.out.println();
+        //                System.out.println();
         assertTrue(output == 0);
     }
     
@@ -301,11 +301,11 @@ public class ColumnarVectorTest {
         while(!result[0].isEOF()){
             output = result[1].getAsInteger()[result[1].getAsInteger().length-1];
             for(Object val: result[1].getAsInteger()){
-                System.out.println(val);
+                //                System.out.println(val);
             }
             result = projFinal.next();
         }
-        System.out.println();
+        //                System.out.println();
         assertTrue(output == 0);
     }
     
@@ -324,7 +324,7 @@ public class ColumnarVectorTest {
         // This query should return only one result
         DBColumn[] result = agg.next();
         double output = result[0].getAsDouble()[0];
-        System.out.println(output + "\n");
+        //                System.out.println(output + "\n");
 
         assertTrue(output == 0.1);
     }
@@ -342,7 +342,7 @@ public class ColumnarVectorTest {
         // This query should return only one result
         DBColumn[] result = agg.next();
         double output = result[0].getAsDouble()[0];
-        System.out.println(output + "\n");
+        //                System.out.println(output + "\n");
 
         assertTrue(output == 0.0);
     }
@@ -360,7 +360,7 @@ public class ColumnarVectorTest {
         // This query should return only one result
         DBColumn[] result = agg.next();
         double output = result[0].getAsDouble()[0];
-        System.out.println(output + "\n");
+        //                System.out.println(output + "\n");
 
         assertTrue(output == 0.04);
     }
@@ -378,7 +378,7 @@ public class ColumnarVectorTest {
         // This query should return only one result
         DBColumn[] result = agg.next();
         double output = result[0].getAsDouble()[0];
-        System.out.println(output + "\n");
+        //                System.out.println(output + "\n");
 
         assertTrue(output == 0.39);
     }
@@ -396,7 +396,7 @@ public class ColumnarVectorTest {
         // This query should return only one result
         DBColumn[] result = agg.next();
         double output = result[0].getAsDouble()[0];
-        System.out.println(output + "\n");
+        //                System.out.println(output + "\n");
 
         assertTrue(output == 0.078);
     }
@@ -414,7 +414,7 @@ public class ColumnarVectorTest {
         // This query should return only one result
         DBColumn[] result = agg.next();
         double output = result[0].getAsDouble()[0];
-        System.out.println(output + "\n");
+        //                System.out.println(output + "\n");
 
         assertTrue(output == 1.4);
     }
@@ -437,7 +437,7 @@ public class ColumnarVectorTest {
         // This query should return only one result
         DBColumn[] result = agg.next();
         int output = result[0].getAsInteger()[0];
-        System.out.println(output + "\n");
+        //                System.out.println(output + "\n");
 
         assertTrue(output == 3699420);
     }
@@ -460,7 +460,7 @@ public class ColumnarVectorTest {
         // This query should return only one result
         DBColumn[] result = agg.next();
         double output = result[0].getAsDouble()[0];
-        System.out.println(output + "\n");
+        //                System.out.println(output + "\n");
 
         assertTrue(output == 1233140.0);
     }

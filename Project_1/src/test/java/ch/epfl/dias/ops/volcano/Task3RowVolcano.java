@@ -54,7 +54,9 @@ public class Task3RowVolcano {
                 DataType.STRING,
                 DataType.STRING};
         
-        RowStoreOrder = new RowStore(orderSchema, "input/orders_small.csv", "\\|");
+    	long startTime = new Date().getTime();
+
+        RowStoreOrder = new RowStore(orderSchema, "input/orders_big.csv", "\\|");
         try {
 			RowStoreOrder.load();
 		} catch (IOException e) {
@@ -62,18 +64,21 @@ public class Task3RowVolcano {
 			e.printStackTrace();
 		}
         
-        RowStoreLineItem = new RowStore(lineitemSchema, "input/lineitem_small.csv", "\\|");
+        RowStoreLineItem = new RowStore(lineitemSchema, "input/lineitem_big.csv", "\\|");
         try {
 			RowStoreLineItem.load();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}        
+		}  
+        
+        System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName() + " Duration = " + (new Date().getTime() - startTime) + "ms\r\n");
+
     }
     
     
     @Test
-    public void query1(){
+    public void RowVolcanoquery1(){
         /* SELECT L.L_PARTKEY, L.L_LINESTATUS, L_RECEIPTDATE 
          * FROM lineitem L 
          * WHERE L.L_QUANTITY >= 20 */
@@ -91,7 +96,7 @@ public class Task3RowVolcano {
                 
         while(!result.isEOF()) {
         	Integer output = result.getFieldAsInt(0);
-            System.out.println(output);
+//            System.out.println(output);
             result = proj.next();
         }
         
@@ -100,7 +105,7 @@ public class Task3RowVolcano {
     }
     
     @Test
-    public void query2(){
+    public void RowVolcanoquery2(){
         /* SELECT L.L_TAX, O.O_COMMENT
 		 * FROM orders O, lineitem L
 		 * WHERE O.O_ORDERKEY = L.L_ORDERKEY
@@ -125,7 +130,7 @@ public class Task3RowVolcano {
                 
         while(!result.isEOF()) {
         	Double output = result.getFieldAsDouble(0);
-            System.out.println(output);
+//            System.out.println(output);
             result = proj.next();
         }
         
@@ -134,7 +139,7 @@ public class Task3RowVolcano {
     }
     
     @Test
-    public void query3(){
+    public void RowVolcanoquery3(){
         /* SELECT MIN(L.L_DISCOUNT)
 		 * FROM lineitem L
 		 * WHERE L.L_QUANTITY < 30 */
@@ -151,10 +156,10 @@ public class Task3RowVolcano {
         // This query should return only one result
         DBTuple result = agg.next();
         double output = result.getFieldAsDouble(0);
-        System.out.println(output + "\n");
+//        System.out.println(output + "\n");
         
         System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName() + " Duration = " + (new Date().getTime() - startTime) + "ms\r\n");
 
-        assertTrue(output == 0.04);
+//        assertTrue(output == 0.04);
     }
 }

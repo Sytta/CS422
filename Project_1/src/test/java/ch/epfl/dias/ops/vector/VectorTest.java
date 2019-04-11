@@ -84,7 +84,7 @@ public class VectorTest {
 					resultPrint += col.getValue(j).toString() + " // ";
 				}
 				
-				System.out.println(resultPrint);
+//				System.out.println(resultPrint);
 				resultPrint = "";
 			}
 			
